@@ -17,11 +17,7 @@ export default function App() {
     name: "",
     whatsapp: "",
     email: "",
-    recipient: "",
-    occasion: "",
     plan: "",
-    story: "",
-    details: "",
   });
 
   const handleFormChange = (e) => {
@@ -36,11 +32,7 @@ export default function App() {
       `Nome: ${formData.name || "-"}`,
       `WhatsApp: ${formData.whatsapp || "-"}`,
       `E-mail: ${formData.email || "-"}`,
-      `Para quem é a música: ${formData.recipient || "-"}`,
-      `Ocasião: ${formData.occasion || "-"}`,
       `Plano desejado: ${formData.plan || "-"}`,
-      `História: ${formData.story || "-"}`,
-      `Frase, apelido ou detalhe importante: ${formData.details || "-"}`,
     ].join("\n");
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -606,7 +598,7 @@ export default function App() {
             </h2>
 
             <p className="mt-4 text-base leading-7 text-[#6B7280]">
-              Preencha os dados abaixo. Quanto mais detalhes, mais emocionante será o resultado.
+              Preencha os dados iniciais abaixo para começarmos sua música.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-[#0B2454]">
@@ -640,28 +632,6 @@ export default function App() {
                 placeholder="E-mail"
               />
 
-              <input
-                name="recipient"
-                value={formData.recipient}
-                onChange={handleFormChange}
-                className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2"
-                placeholder="Para quem é a música?"
-              />
-
-              <select
-                name="occasion"
-                value={formData.occasion}
-                onChange={handleFormChange}
-                className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2"
-              >
-                <option value="">Qual a ocasião?</option>
-                <option>Aniversário</option>
-                <option>Namoro</option>
-                <option>Casamento</option>
-                <option>Dia das Mães</option>
-                <option>Homenagem</option>
-              </select>
-
               <select
                 name="plan"
                 value={formData.plan}
@@ -673,24 +643,6 @@ export default function App() {
                 <option>Retrato Musical — R$ 249</option>
                 <option>História Cantada — R$ 399</option>
               </select>
-
-              <textarea
-                name="story"
-                value={formData.story}
-                onChange={handleFormChange}
-                rows={4}
-                className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2"
-                placeholder="Conte um pouco da história (como se conheceram, momentos marcantes, características da pessoa...)"
-              />
-
-              <textarea
-                name="details"
-                value={formData.details}
-                onChange={handleFormChange}
-                rows={3}
-                className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2"
-                placeholder="Existe alguma frase, apelido ou detalhe que não pode faltar?"
-              />
             </div>
 
             <button
@@ -698,11 +650,11 @@ export default function App() {
               onClick={handleWhatsAppSubmit}
               className="mt-6 w-full rounded-xl bg-[#F25757] px-5 py-4 text-sm font-bold text-white shadow-[0_10px_22px_rgba(242,87,87,0.18)] transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-[0_14px_28px_rgba(242,87,87,0.24)]"
             >
-              PEDIR A MINHA MÚSICA 🎁
+              CONTINUAR 🎶
             </button>
 
             <p className="mt-4 text-center text-sm text-[#6B7280]">
-              Ao clicar, abriremos o WhatsApp com sua mensagem preenchida automaticamente.
+              Você será direcionado para continuar o seu pedido.
             </p>
           </div>
         </div>
