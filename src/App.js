@@ -12,6 +12,7 @@ export default function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const WHATSAPP_NUMBER = "5511987790463";
+  const TALLY_FORM_URL = "https://tally.so/r/q4Y4VY";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -20,27 +21,33 @@ export default function App() {
     plan: "",
   });
 
+  const tallyUrl = useMemo(() => {
+    const params = new URLSearchParams({
+      nome: formData.name,
+      whatsapp: formData.whatsapp,
+      email: formData.email,
+      plano: formData.plan,
+    });
+
+    return `${TALLY_FORM_URL}?${params.toString()}`;
+  }, [formData.email, formData.name, formData.plan, formData.whatsapp]);
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleWhatsAppSubmit = () => {
-    const message = [
-      "Olá! Quero pedir a minha música personalizada.",
-      "",
-      `Nome: ${formData.name || "-"}`,
-      `WhatsApp: ${formData.whatsapp || "-"}`,
-      `E-mail: ${formData.email || "-"}`,
-      `Plano desejado: ${formData.plan || "-"}`,
-    ].join("\n");
+  const handleContinueToTally = () => {
+    if (!formData.name || !formData.whatsapp || !formData.email || !formData.plan) {
+      alert("Preencha nome, WhatsApp, e-mail e plano para continuar.");
+      return;
+    }
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+    window.open(tallyUrl, "_blank");
   };
 
   const handleQuickWhatsApp = () => {
-    const message = "Olá! Quero pedir a minha música personalizada pelo WhatsApp.";
+    const message = "Olá! Tenho algumas dúvidas sobre a Música Surpresa e gostaria de falar com vocês.";
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
@@ -270,7 +277,7 @@ export default function App() {
               href="#formulario"
               className="hidden rounded-xl bg-[#0B2454] px-5 py-3 text-xs font-bold text-white shadow-sm transition hover:opacity-95 lg:inline-block lg:text-sm"
             >
-              FAZER MEU PEDIDO 🎁
+              COMEÇAR MEU PEDIDO 🎶
             </a>
 
             <button
@@ -327,7 +334,7 @@ export default function App() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-2 rounded-xl bg-[#0B2454] px-4 py-3 text-center text-sm font-bold text-white shadow-sm"
               >
-                FAZER MEU PEDIDO 🎁
+                COMEÇAR MEU PEDIDO 🎶
               </a>
             </nav>
           </div>
@@ -380,7 +387,7 @@ export default function App() {
           <div className="mx-auto max-w-7xl px-4 py-8 lg:px-10">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <a
-                href="#planos"
+                href="#formulario"
                 className="inline-flex min-h-[68px] items-center justify-center rounded-[18px] bg-[#0B2454] px-8 text-[18px] font-black text-white shadow-[0_8px_30px_rgba(11,36,84,0.16)] transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-xl lg:min-w-[400px] lg:px-10 lg:text-[20px]"
               >
                 {activeHeroSlide.cta}
@@ -497,14 +504,15 @@ export default function App() {
                       {plan.price}
                     </div>
 
-                    <button
-                      className={`mt-4 w-full rounded-xl px-2 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 ${
+                    <a
+                      href="#formulario"
+                      className={`mt-4 flex w-full items-center justify-center rounded-xl px-2 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 ${
                         plan.featured ? "shadow-lg" : "shadow-sm"
                       }`}
                       style={{ backgroundColor: plan.color }}
                     >
                       {plan.cta}
-                    </button>
+                    </a>
               </div>
             ))}
           </div>
@@ -647,14 +655,14 @@ export default function App() {
 
             <button
               type="button"
-              onClick={handleWhatsAppSubmit}
+              onClick={handleContinueToTally}
               className="mt-6 w-full rounded-xl bg-[#F25757] px-5 py-4 text-sm font-bold text-white shadow-[0_10px_22px_rgba(242,87,87,0.18)] transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-[0_14px_28px_rgba(242,87,87,0.24)]"
             >
-              CONTINUAR 🎶
+              CONTINUAR PARA O FORMULÁRIO 🎶
             </button>
 
             <p className="mt-4 text-center text-sm text-[#6B7280]">
-              Você será direcionado para continuar o seu pedido.
+              Ao continuar, você seguirá para o formulário completo com seus dados iniciais já preenchidos.
             </p>
           </div>
         </div>
@@ -700,7 +708,7 @@ export default function App() {
 <button
   type="button"
   onClick={handleQuickWhatsApp}
-  aria-label="Peça pelo WhatsApp"
+  aria-label="Atendimento WhatsApp"
   className="fixed bottom-4 right-4 z-50 inline-flex items-center justify-center rounded-full bg-transparent p-0 text-white shadow-none transition-all duration-300 hover:scale-[1.03] sm:gap-2.5 sm:rounded-full sm:bg-[#38B73F] sm:px-3.5 sm:py-2.5 sm:shadow-[0_12px_26px_rgba(56,183,63,0.26)] sm:hover:shadow-[0_16px_34px_rgba(56,183,63,0.34)] lg:bottom-5 lg:right-5"
 >
   <span className="flex h-14 w-14 min-h-[56px] min-w-[56px] shrink-0 items-center justify-center rounded-full bg-[#25D366] shadow-[0_12px_26px_rgba(37,211,102,0.34)] aspect-square sm:h-11 sm:w-11 sm:min-h-[44px] sm:min-w-[44px] sm:border-[2.5px] sm:border-white sm:bg-[#38B73F] sm:shadow-sm">
@@ -712,8 +720,8 @@ export default function App() {
   </span>
 
   <span className="hidden text-left text-[13px] font-bold leading-[1.02] tracking-[-0.02em] sm:inline">
-    <span className="block">Peça pelo</span>
-    <span className="block">WhatsApp</span>
+    <span className="block">Tire suas dúvidas</span>
+    <span className="block">no WhatsApp</span>
   </span>
 </button>
       <footer id="contato" className="scroll-mt-24 bg-[#0B2454] py-14 text-white lg:scroll-mt-32">
