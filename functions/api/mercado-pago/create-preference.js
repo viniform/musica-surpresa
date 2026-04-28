@@ -34,9 +34,11 @@ export async function onRequestPost({ request, env }) {
         },
         binary_mode: false,
         notification_url: "https://www.musicasurpresa.com.br/api/mercado-pago/webhook",
-        external_reference: `order_${body.planId}_${Date.now()}`,
+        external_reference: body.orderId || `order_${body.planId}_${Date.now()}`,
         statement_descriptor: "MUSICASURPRESA",
         metadata: {
+          orderId: body.orderId || "",
+          customerId: body.customerId || "",
           planId: body.planId || "",
           planTitle: body.title || "",
           customerName: body.customer?.name || "",

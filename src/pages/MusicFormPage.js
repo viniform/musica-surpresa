@@ -2,10 +2,23 @@ import React, { useState } from "react";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.png";
 
 export default function MusicFormPage() {
+  let lead = {};
+
+  try {
+    const storedLead = sessionStorage.getItem("musicOrderLead");
+    if (storedLead) lead = JSON.parse(storedLead);
+  } catch (error) {
+    console.error("Erro ao ler dados do mini formulário", error);
+  }
+
+  const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 125,00";
+
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    whatsapp: "",
+    orderId: lead.orderId || "",
+    customerId: lead.customerId || "",
+    name: lead.name || "",
+    email: lead.email || "",
+    whatsapp: lead.whatsapp || "",
     recipient: "",
     relationship: "",
     occasion: "",
@@ -46,7 +59,7 @@ export default function MusicFormPage() {
     if (!validate()) return;
 
     // salva dados no sessionStorage
-    sessionStorage.setItem("musicOrderDraft", JSON.stringify(form));
+    sessionStorage.setItem("musicOrderDraft", JSON.stringify({ ...form, plan: selectedPlan }));
 
     // redireciona para upsell
     window.location.href = "/upsell";

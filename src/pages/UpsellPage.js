@@ -66,11 +66,22 @@ export default function UpsellPage({
   initialPlanId = "musica-surpresa",
   onContinueToPayment,
 }) {
-  const [selectedPlanId, setSelectedPlanId] = useState(initialPlanId);
+  const initialSelectedPlanId = useMemo(() => {
+    if (!customer?.plan) return initialPlanId;
+
+    const matchedPlan = plans.find((plan) => customer.plan.includes(plan.name));
+    return matchedPlan?.id || initialPlanId;
+  }, [customer?.plan, initialPlanId, plans]);
+
+  const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
 
   const selectedPlan = useMemo(() => {
     return plans.find((plan) => plan.id === selectedPlanId) || plans[0];
   }, [plans, selectedPlanId]);
+
+  React.useEffect(() => {
+    setSelectedPlanId(initialSelectedPlanId);
+  }, [initialSelectedPlanId]);
 
   const handleContinue = () => {
     if (typeof onContinueToPayment === "function") {
@@ -92,7 +103,7 @@ export default function UpsellPage({
     },
     {
       question: "Posso optar só pela música?",
-      answer: "Sim. A opção Música Surpresa continua disponível por R$ 99,00.",
+      answer: "Sim. A opção Música Surpresa continua disponível por R$ 125,00.",
     },
     {
       question: "Quando recebo?",

@@ -68,17 +68,20 @@ export async function onRequestPost({ request, env }) {
     }
 
     const result = {
+      orderId: payment.metadata?.orderId || payment.external_reference || "",
+      customerId: payment.metadata?.customerId || "",
       paymentId: payment.id,
-      status: payment.status,
-      statusDetail: payment.status_detail,
+      paymentStatus: payment.status,
+      paymentStatusDetail: payment.status_detail,
+      paymentMethod: payment.payment_type_id || payment.payment_method_id || "",
       externalReference: payment.external_reference,
-      metadata: payment.metadata,
+      metadata: payment.metadata || {},
       transactionAmount: payment.transaction_amount,
       payerEmail: payment.payer?.email,
       eventType,
     };
 
-    if (payment.status === "approved") {
+    if (["approved", "pending", "rejected", "cancelled", "refunded", "charged_back"].includes(payment.status)) {
       console.log("Pagamento aprovado:", result);
 
       const approvedDate = payment.date_approved || payment.date_created || new Date().toISOString();
@@ -93,8 +96,13 @@ export async function onRequestPost({ request, env }) {
       });
 
       await sendToGoogleSheets({
+        orderId: result.orderId,
+        customerId: result.customerId,
+        stage: result.paymentStatus === "approved" ? "payment_approved" : `payment_${result.paymentStatus}`,
         paymentId: result.paymentId,
-        status: result.status,
+        paymentStatus: result.paymentStatus,
+        paymentStatusDetail: result.paymentStatusDetail || "",
+        paymentMethod: result.paymentMethod || "",
         planId: result.metadata?.planId || "",
         planTitle: result.metadata?.planTitle || "",
         customerName: result.metadata?.customerName || "",

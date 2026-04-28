@@ -18,7 +18,6 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState(-1);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showTally, setShowTally] = useState(false);
   const [showUpsell] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,7 +26,6 @@ export default function App() {
 
 
   const WHATSAPP_NUMBER = "5511940787078";
-  const TALLY_FORM_URL = "https://tally.so/embed/q4Y4VY?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
 
   const BRAND = {
     terracotta: "#B24F36",
@@ -46,16 +44,6 @@ const [formData, setFormData] = useState({
   plan: "Música Surpresa — R$ 125,00",
 });
 
-  const tallyUrl = useMemo(() => {
-    const params = new URLSearchParams({
-      nome: normalizeName(formData.name),
-      whatsapp: formData.whatsapp,
-      email: formData.email,
-      plano: formData.plan,
-    });
-
-    return `${TALLY_FORM_URL}&${params.toString()}`;
-  }, [formData.email, formData.name, formData.plan, formData.whatsapp]);
 
 const initialPlanId = useMemo(() => {
   const routePlan =
@@ -112,9 +100,24 @@ const normalizeEmail = (value) => {
 const isValidEmail = (value) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 };
+
+const generateOrderId = () => {
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[-:.TZ]/g, "")
+    .slice(0, 14);
+
+  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
+
+  return `MS-${timestamp}-${random}`;
+};
+
+const buildCustomerId = (whatsapp) => {
+  const digits = normalizeWhatsapp(whatsapp);
+  return digits ? `55${digits}` : "";
+};
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setShowTally(false);
 
     if (name === "whatsapp") {
       setFormData((prev) => ({ ...prev, [name]: normalizeWhatsapp(value) }));
@@ -135,27 +138,49 @@ const isValidEmail = (value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleContinueToTally = () => {
+  const handleContinueToMusicForm = () => {
     if (!formData.name || !formData.whatsapp || !formData.email) {
       alert("Preencha nome, WhatsApp e e-mail para continuar.");
       return;
     }
+
     if (!isValidEmail(formData.email)) {
       alert("Digite um e-mail válido.");
       return;
     }
+
     if (formData.whatsapp.length < 10 || formData.whatsapp.length > 11) {
       alert("Digite um WhatsApp válido com DDD.");
       return;
     }
 
-    setShowTally(true);
-    setTimeout(() => {
-      const tallySection = document.getElementById("tally-embed");
-      if (tallySection) {
-        tallySection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 100);
+    const existingLead = sessionStorage.getItem("musicOrderLead");
+    let existingOrderId = "";
+
+    try {
+      existingOrderId = existingLead ? JSON.parse(existingLead)?.orderId || "" : "";
+    } catch (error) {
+      console.error("Erro ao recuperar orderId existente", error);
+    }
+
+    const orderId = existingOrderId || generateOrderId();
+    const customerId = buildCustomerId(formData.whatsapp);
+
+    sessionStorage.setItem(
+      "musicOrderLead",
+      JSON.stringify({
+        orderId,
+        customerId,
+        name: normalizeName(formData.name),
+        whatsapp: formData.whatsapp,
+        email: formData.email,
+        plan: formData.plan,
+      })
+    );
+
+    sessionStorage.setItem("selectedPlan", formData.plan);
+
+    window.location.href = "/criar-musica";
   };
 
   const handleQuickWhatsApp = () => {
@@ -219,25 +244,6 @@ const isValidEmail = (value) => {
     return () => clearInterval(interval);
   }, [heroSlides]);
 
-  useEffect(() => {
-    if (!showTally) return;
-
-    if (window.Tally) {
-      window.Tally.loadEmbeds();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://tally.so/widgets/embed.js";
-    script.async = true;
-    script.onload = () => {
-      if (window.Tally) {
-        window.Tally.loadEmbeds();
-      }
-    };
-
-    document.body.appendChild(script);
-  }, [showTally, tallyUrl]);
 
 
   const activeHeroSlide = heroSlides[currentSlide];
@@ -456,6 +462,8 @@ const isValidEmail = (value) => {
         title: plan.name,
         unitPrice: plan.price,
         quantity: 1,
+        orderId: upsellParams.orderId || "",
+        customerId: upsellParams.customerId || "",
         customer: {
           name: upsellParams.customerName || formData.name,
           email: upsellParams.email || formData.email,
@@ -532,6 +540,9 @@ const isValidEmail = (value) => {
     }
 
     return {
+      orderId: draft?.orderId || "",
+      customerId: draft?.customerId || "",
+
       customerName:
         draft?.name ||
         params.get("cliente_nome") ||
@@ -1000,9 +1011,24 @@ if (element) {
 
                     <a
                       href="#formulario"
-                      onClick={() =>
-                        setFormData((prev) => ({ ...prev, plan: `${plan.name} — ${plan.price}` }))
-                      }
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        const selectedPlan = `${plan.name} — ${plan.price}`;
+                        sessionStorage.setItem("selectedPlan", selectedPlan);
+                        setFormData((prev) => ({ ...prev, plan: selectedPlan }));
+
+                        setTimeout(() => {
+                          const element = document.getElementById("formulario");
+                          if (!element) return;
+
+                          const headerOffset = 110;
+                          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                          const offsetPosition = elementPosition - headerOffset;
+
+                          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                        }, 0);
+                      }}
                       className={`ml-auto flex w-auto min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 ${
                         plan.featured ? "shadow-lg" : "shadow-sm"
                       }`}
@@ -1216,7 +1242,7 @@ if (element) {
 
             <button
               type="button"
-              onClick={handleContinueToTally}
+              onClick={handleContinueToMusicForm}
               style={{
                 backgroundColor: BRAND.terracotta,
                 boxShadow: "0 10px 22px rgba(169,98,96,0.18)",
@@ -1232,21 +1258,6 @@ if (element) {
           </div>
         </div>
 
-{showTally && (
-  <div id="tally-embed" className="mx-auto mt-10 max-w-7xl px-4 lg:px-10">
-    <div className="rounded-[24px] border border-[#E8DDD2] bg-white shadow-sm">
-      <iframe
-        key={tallyUrl}
-        data-tally-src={tallyUrl}
-        title="Formulário Música Surpresa"
-        className="w-full"
-        frameBorder="0"
-        marginHeight="0"
-        marginWidth="0"
-      />
-    </div>
-  </div>
-)}
       </section>
       <section id="faq" className="scroll-mt-24 py-16 lg:scroll-mt-16" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
