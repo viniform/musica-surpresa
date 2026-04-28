@@ -456,7 +456,7 @@ const isValidEmail = (value) => {
         unitPrice: plan.price,
         quantity: 1,
         customer: {
-          name: upsellParams.recipient || formData.name,
+          name: upsellParams.customerName || formData.name,
           email: upsellParams.email || formData.email,
           whatsapp: upsellParams.whatsapp || formData.whatsapp,
         },
@@ -506,11 +506,17 @@ const isValidEmail = (value) => {
     const params = new URLSearchParams(window.location.search);
 
     return {
-      recipient: params.get("nome") || formData.name,
+      customerName: params.get("cliente_nome") || params.get("comprador_nome") || formData.name,
+      recipient:
+        params.get("presente_para") ||
+        params.get("homenageado") ||
+        params.get("destinatario") ||
+        params.get("nome") ||
+        "Pessoa especial",
       email: params.get("email") || formData.email,
       whatsapp: params.get("whatsapp") || formData.whatsapp,
-      occasion: params.get("ocasiao") || "",
-      style: params.get("estilo") || "",
+      occasion: params.get("ocasiao") || params.get("ocasião") || "Ocasião especial",
+      style: params.get("estilo") || params.get("estilo_desejado") || "Personalizado",
       plan: params.get("plano") || formData.plan,
     };
   }, [formData.email, formData.name, formData.plan, formData.whatsapp]);
