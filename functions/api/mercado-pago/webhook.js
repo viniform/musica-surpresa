@@ -1,6 +1,5 @@
-
 async function sendToGoogleSheets(data) {
-  const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxn-Czr8uZOUT2umYwz7yN6qQt6gFyPD_DhCWY4Nuq-swBdlHoosW20p6D4TX3yVarzZg/exec";
+  const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzXbDgNcrSpT64w3BgHUqY2Q-FElEhq8QJ44i9FqEHbKQ7hZWmYhvsUH7YjJluNVPZomQ/exec";
 
   try {
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
@@ -82,15 +81,38 @@ export async function onRequestPost({ request, env }) {
     if (payment.status === "approved") {
       console.log("Pagamento aprovado:", result);
 
+      const approvedDate = payment.date_approved || payment.date_created || new Date().toISOString();
+      const dateSaoPaulo = new Date(approvedDate).toLocaleString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+
       await sendToGoogleSheets({
         paymentId: result.paymentId,
         status: result.status,
-        planId: result.metadata?.planId,
-        customerName: result.metadata?.customerName,
-        email: result.payerEmail,
+        planId: result.metadata?.planId || "",
+        planTitle: result.metadata?.planTitle || "",
+        customerName: result.metadata?.customerName || "",
+        email: result.metadata?.email || result.payerEmail || "",
+        whatsapp: result.metadata?.whatsapp || "",
+        recipient: result.metadata?.recipient || "",
+        relationship: result.metadata?.relationship || "",
+        occasion: result.metadata?.occasion || "",
+        description: result.metadata?.description || "",
+        message: result.metadata?.message || "",
+        moments: result.metadata?.moments || "",
+        specialPhrase: result.metadata?.specialPhrase || "",
+        style: result.metadata?.style || "",
+        voiceType: result.metadata?.voiceType || "",
+        observations: result.metadata?.observations || "",
         amount: result.transactionAmount,
         externalReference: result.externalReference,
-        date: new Date().toISOString(),
+        date: dateSaoPaulo,
       });
     } else {
       console.log("Pagamento recebido com status não aprovado:", result);

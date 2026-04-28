@@ -12,6 +12,7 @@ import demoHomenagemAmigos from "./assets/Musica_Surpresa_Homenagem_Amigos.mp3";
 import { useEffect, useMemo, useRef, useState } from "react";
 import UpsellPage from "./pages/UpsellPage";
 import AboutPage from "./pages/AboutPage";
+import MusicFormPage from "./pages/MusicFormPage";
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -460,6 +461,18 @@ const isValidEmail = (value) => {
           email: upsellParams.email || formData.email,
           whatsapp: upsellParams.whatsapp || formData.whatsapp,
         },
+        briefing: {
+          recipient: upsellParams.recipient || "",
+          relationship: upsellParams.relationship || "",
+          occasion: upsellParams.occasion || "",
+          description: upsellParams.description || "",
+          message: upsellParams.message || "",
+          moments: upsellParams.moments || "",
+          specialPhrase: upsellParams.specialPhrase || "",
+          style: upsellParams.style || "",
+          voiceType: upsellParams.voiceType || "",
+          observations: upsellParams.observations || "",
+        },
       }),
     });
 
@@ -478,6 +491,7 @@ const isValidEmail = (value) => {
 
   const isUpsellRoute = window.location.pathname === "/upsell";
   const isAboutRoute = window.location.pathname === "/quem-somos";
+  const isMusicFormRoute = window.location.pathname === "/criar-musica";
   const isPaymentSuccessRoute = window.location.pathname === "/pagamento/sucesso";
   const isPaymentPendingRoute = window.location.pathname === "/pagamento/pendente";
   const isPaymentErrorRoute = window.location.pathname === "/pagamento/erro";
@@ -508,21 +522,68 @@ const isValidEmail = (value) => {
   const upsellParams = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
 
+    // tenta ler dados do formulário próprio
+    let draft = null;
+    try {
+      const stored = sessionStorage.getItem("musicOrderDraft");
+      if (stored) draft = JSON.parse(stored);
+    } catch (e) {
+      console.error("Erro ao ler sessionStorage", e);
+    }
+
     return {
-      customerName: params.get("cliente_nome") || params.get("comprador_nome") || formData.name,
+      customerName:
+        draft?.name ||
+        params.get("cliente_nome") ||
+        params.get("comprador_nome") ||
+        formData.name,
+
       recipient:
+        draft?.recipient ||
         params.get("presente_para") ||
         params.get("homenageado") ||
         params.get("destinatario") ||
         params.get("nome") ||
         "Pessoa especial",
-      email: params.get("email") || formData.email,
-      whatsapp: params.get("whatsapp") || formData.whatsapp,
-      occasion: params.get("ocasiao") || params.get("ocasião") || "Ocasião especial",
-      style: params.get("estilo") || params.get("estilo_desejado") || "Personalizado",
-      plan: params.get("plano") || formData.plan,
+
+      email:
+        draft?.email ||
+        params.get("email") ||
+        formData.email,
+
+      whatsapp:
+        draft?.whatsapp ||
+        params.get("whatsapp") ||
+        formData.whatsapp,
+
+      occasion:
+        draft?.occasion ||
+        params.get("ocasiao") ||
+        params.get("ocasião") ||
+        "Ocasião especial",
+
+      style:
+        draft?.style ||
+        params.get("estilo") ||
+        params.get("estilo_desejado") ||
+        "Personalizado",
+
+      relationship: draft?.relationship || "",
+      description: draft?.description || "",
+      message: draft?.message || "",
+      moments: draft?.moments || "",
+      specialPhrase: draft?.specialPhrase || "",
+      voiceType: draft?.voiceType || "",
+      observations: draft?.observations || "",
+
+      plan:
+        params.get("plano") || formData.plan,
     };
   }, [formData.email, formData.name, formData.plan, formData.whatsapp]);
+
+  if (isMusicFormRoute) {
+    return <MusicFormPage />;
+  }
 
   if (showUpsell || isUpsellRoute) {
     return (
