@@ -48,13 +48,23 @@ export async function onRequestPost({ request, env }) {
     const payment = await paymentResponse.json();
 
     if (!paymentResponse.ok) {
+      console.log("Pagamento não encontrado ou não processável:", {
+        paymentId,
+        eventType,
+        status: paymentResponse.status,
+        payment,
+      });
+
       return Response.json(
         {
           received: true,
           processed: false,
-          error: payment,
+          ignored: true,
+          reason: "Pagamento não encontrado ou não processável.",
+          paymentId,
+          eventType,
         },
-        { status: paymentResponse.status }
+        { status: 200 }
       );
     }
 

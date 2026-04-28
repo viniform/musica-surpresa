@@ -80,6 +80,7 @@ const initialPlanId = useMemo(() => {
   return withoutCountryCode.slice(0, 11);
 };
 
+
 const formatWhatsapp = (value) => {
   const digits = normalizeWhatsapp(value);
 
@@ -91,6 +92,7 @@ const formatWhatsapp = (value) => {
 
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
 };
+
 
 function normalizeName(value) {
   const hadTrailingSpace = /\s$/.test(value);
@@ -117,6 +119,7 @@ const isValidEmail = (value) => {
       setFormData((prev) => ({ ...prev, [name]: normalizeWhatsapp(value) }));
       return;
     }
+
 
     if (name === "name") {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -454,8 +457,8 @@ const isValidEmail = (value) => {
         quantity: 1,
         customer: {
           name: upsellParams.recipient || formData.name,
-          email: formData.email,
-          whatsapp: formData.whatsapp,
+          email: upsellParams.email || formData.email,
+          whatsapp: upsellParams.whatsapp || formData.whatsapp,
         },
       }),
     });
@@ -504,11 +507,13 @@ const isValidEmail = (value) => {
 
     return {
       recipient: params.get("nome") || formData.name,
+      email: params.get("email") || formData.email,
+      whatsapp: params.get("whatsapp") || formData.whatsapp,
       occasion: params.get("ocasiao") || "",
       style: params.get("estilo") || "",
       plan: params.get("plano") || formData.plan,
     };
-  }, [formData.name, formData.plan]);
+  }, [formData.email, formData.name, formData.plan, formData.whatsapp]);
 
   if (showUpsell || isUpsellRoute) {
     return (
@@ -1055,6 +1060,7 @@ if (element) {
                 className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2"
                 placeholder="E-mail"
               />
+
 
               <input
                 type="text"

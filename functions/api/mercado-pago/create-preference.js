@@ -28,7 +28,11 @@ export async function onRequestPost({ request, env }) {
           pending: "https://www.musicasurpresa.com.br/pagamento/pendente",
         },
         auto_return: "approved",
-        binary_mode: true,
+        payment_methods: {
+          excluded_payment_methods: [],
+          excluded_payment_types: [],
+        },
+        binary_mode: false,
         notification_url: "https://www.musicasurpresa.com.br/api/mercado-pago/webhook",
         external_reference: `order_${body.planId}_${Date.now()}`,
         statement_descriptor: "MUSICASURPRESA",
@@ -47,7 +51,6 @@ export async function onRequestPost({ request, env }) {
 
     return Response.json({
       init_point: data.init_point,
-      sandbox_init_point: data.sandbox_init_point,
       preference_id: data.id,
     });
   } catch (error) {
