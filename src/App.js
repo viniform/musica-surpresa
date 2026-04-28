@@ -478,6 +478,9 @@ const isValidEmail = (value) => {
 
   const isUpsellRoute = window.location.pathname === "/upsell";
   const isAboutRoute = window.location.pathname === "/quem-somos";
+  const isPaymentSuccessRoute = window.location.pathname === "/pagamento/sucesso";
+  const isPaymentPendingRoute = window.location.pathname === "/pagamento/pendente";
+  const isPaymentErrorRoute = window.location.pathname === "/pagamento/erro";
 
   useEffect(() => {
     if (window.location.pathname !== "/") return;
@@ -546,6 +549,79 @@ const isValidEmail = (value) => {
   if (isAboutRoute) {
     return <AboutPage />;
   }
+
+  if (isPaymentSuccessRoute || isPaymentPendingRoute || isPaymentErrorRoute) {
+    const status = isPaymentSuccessRoute
+      ? {
+          emoji: "✅",
+          title: "Pagamento confirmado",
+          subtitle: "Seu pedido foi recebido com sucesso.",
+          message:
+            "Nossa equipe já pode iniciar a produção da sua Música Surpresa. Você também receberá as próximas orientações pelos canais informados no pedido.",
+          actionLabel: "Voltar para o início",
+        }
+      : isPaymentPendingRoute
+      ? {
+          emoji: "⏳",
+          title: "Pagamento em processamento",
+          subtitle: "Estamos aguardando a confirmação do pagamento.",
+          message:
+            "Se você pagou por Pix, a confirmação costuma acontecer em poucos instantes. Assim que o Mercado Pago confirmar, seu pedido seguirá para produção.",
+          actionLabel: "Voltar para o início",
+        }
+      : {
+          emoji: "⚠️",
+          title: "Pagamento não concluído",
+          subtitle: "Não conseguimos confirmar o pagamento.",
+          message:
+            "Você pode tentar novamente ou falar com nosso atendimento para receber ajuda.",
+          actionLabel: "Tentar novamente",
+        };
+
+    return (
+      <div className="min-h-screen px-4 py-10" style={{ backgroundColor: BRAND.warmBg, color: BRAND.text }}>
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <img
+            src={logoMusicaSurpresa}
+            alt="Música Surpresa"
+            className="h-20 w-auto"
+          />
+
+          <div className="mt-10 w-full rounded-[28px] border border-[#E8DDD2] bg-white px-6 py-10 shadow-sm sm:px-10">
+            <div className="text-5xl">{status.emoji}</div>
+            <h1 className="mt-6 text-3xl font-black tracking-[-0.03em]" style={{ color: BRAND.navy }}>
+              {status.title}
+            </h1>
+            <p className="mt-3 text-lg font-bold" style={{ color: BRAND.terracotta }}>
+              {status.subtitle}
+            </p>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-7" style={{ color: BRAND.muted }}>
+              {status.message}
+            </p>
+
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <a
+                href="/"
+                className="inline-flex items-center justify-center rounded-xl px-6 py-4 text-sm font-bold text-white transition hover:opacity-95"
+                style={{ backgroundColor: BRAND.terracotta }}
+              >
+                {status.actionLabel}
+              </a>
+              <button
+                type="button"
+                onClick={handleQuickWhatsApp}
+                className="inline-flex items-center justify-center rounded-xl border border-[#E8DDD2] bg-white px-6 py-4 text-sm font-bold transition hover:bg-[#FFF8F3]"
+                style={{ color: BRAND.navy }}
+              >
+                Falar com atendimento
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div id="topo" className="min-h-screen" style={{ backgroundColor: BRAND.warmBg, color: BRAND.text }}>
       <header className="sticky top-0 z-50 border-b backdrop-blur-md" style={{ backgroundColor: BRAND.cream, borderColor: "rgba(0,0,0,0.05)" }}>
