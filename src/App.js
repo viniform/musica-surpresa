@@ -42,7 +42,7 @@ const [formData, setFormData] = useState({
   name: "",
   whatsapp: "",
   email: "",
-  plan: "Música Surpresa — R$ 12,00",
+  plan: "Música Surpresa — R$ 125,00",
 });
 
   const tallyUrl = useMemo(() => {
@@ -317,7 +317,7 @@ const isValidEmail = (value) => {
       subtitle:
         "Música exclusiva com letra, melodia e arranjo 100% personalizados | entregue em até 48 horas.",
 
-      price: "R$ 12,00",
+      price: "R$ 125,00",
       color: BRAND.terracotta,
       bg: BRAND.cream,
       border: BRAND.terracottaSoft,

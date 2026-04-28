@@ -5,7 +5,7 @@ const defaultPlans = [
   {
     id: "musica-surpresa",
     name: "Música Surpresa - Áudio",
-    price: 99,
+    price: 125,
     badge: "Escolha Inicial",
     description: "A escolha essencial: música completa personalizada, pronta para emocionar.",
     features: [
@@ -19,7 +19,7 @@ const defaultPlans = [
   {
     id: "video-letra",
     name: "Música + Video com a Letra",
-    price: 149,
+    price: 180,
     badge: "Melhor custo-benefício",
     description:
       "Além da música, você recebe um vídeo com a letra, pronto para emocionar e compartilhar.",
@@ -35,7 +35,7 @@ const defaultPlans = [
   {
     id: "retrospectiva",
     name: "Música + Retrospectiva",
-    price: 299,
+    price: 260,
     badge: "Experiência premium",
     description:
       "A experiência mais completa: música com letra em retrospectiva com fotos personalizadas.",
