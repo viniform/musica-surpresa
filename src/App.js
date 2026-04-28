@@ -1,8 +1,6 @@
 import slide1 from "./assets/Imagem_Index_Dia_das_Maes_02.png";
 import slide2 from "./assets/Imagem_Index_16.png";
-import slide8 from "./assets/Imagem_Index_Dia_das_Maes_02.png";
 import slide11 from "./assets/Imagem_Index_Musica_Surpresa_01.png";
-import imagemDiaDasMaes from "./assets/Imagem_Index_Dia_das_Maes_01.png";
 import imagemHero16 from "./assets/Imagem_Index_Pais_02.png";
 import whatsappIcon from "./assets/whatsapp_icon.png";
 import logoMusicaSurpresa from "./assets/Logo_Musica_Surpresa.png";
@@ -20,7 +18,7 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState(-1);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showTally, setShowTally] = useState(false);
-  const [showUpsell, setShowUpsell] = useState(false);
+  const [showUpsell] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -206,7 +204,7 @@ const isValidEmail = (value) => {
         cta: "💝 CRIAR MINHA MÚSICA",
       },
     ],
-    []
+    [BRAND.terracotta]
   );
 
   useEffect(() => {
