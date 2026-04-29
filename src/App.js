@@ -194,7 +194,7 @@ const buildCustomerId = (whatsapp) => {
       {
         title: (
           <>
-            Transformamos <span style={{ color: BRAND.terracotta }}>histórias</span> 
+            Transformamos <span style={{ color: BRAND.terracotta }}>histórias</span>
             <br />em músicas que emocionam para sempre
           </>
         ),
@@ -214,21 +214,21 @@ const buildCustomerId = (whatsapp) => {
         description:
           "Crie uma homenagem emocionante para mães, pais, avós, filhos, amigos e pessoas que mereçam uma lembrança eternizada ✨",
         pills: ["Homenagens\nÚnicas", "Letra\nPersonalizada", "Entrega\nRápida"],
-          image: slide2,
+        image: slide2,
         imageAlt: "Mãe ouvindo música personalizada que a filha deu de presente ",
         cta: "💝 CRIAR MINHA MÚSICA",
       },
       {
         title: (
           <>
-            Crie músicas para <span style={{ color: BRAND.terracotta }}>ocasiões especiais</span> que merecem 
+            Crie músicas para <span style={{ color: BRAND.terracotta }}>ocasiões especiais</span> que merecem
             <br />ser inesquecíveis
           </>
         ),
         description:
           "Dia das Mães, Dia dos Pais, Dia dos Namorados, aniversários e outras datas ganham um presente único e emocional ✨",
         pills: ["Diferente", "Surpreendente", "Emocionante"],
-          image: slide1,
+        image: slide1,
         imageAlt: "Família ouvindo música peronalizada para uma ocasião especial",
         cta: "💝 CRIAR MINHA MÚSICA",
       },
@@ -262,7 +262,7 @@ const buildCustomerId = (whatsapp) => {
       audio: demoHomenagemFamilia,
     },
     {
-      title: "Meu Porto Seguro",
+      title: "Porto Seguro",
       occasion: "De Namorada para Namorado",
       style: "Pop Romântico",
       audio: demoHomenagemNamorado,
@@ -334,7 +334,7 @@ const buildCustomerId = (whatsapp) => {
         "Melodia exclusiva",
         "Arranjo profissional",
         "Entrega em até 48h",
-        "Áudio em alta qualidade",
+        "Áudio com qualidade",
       ],
       cta: "💝 CRIAR MINHA MÚSICA",
       featured: false,
@@ -697,7 +697,7 @@ const buildCustomerId = (whatsapp) => {
   return (
     <div id="topo" className="min-h-screen" style={{ backgroundColor: BRAND.warmBg, color: BRAND.text }}>
       <header className="sticky top-0 z-50 border-b backdrop-blur-md" style={{ backgroundColor: BRAND.cream, borderColor: "rgba(0,0,0,0.05)" }}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-10">
           <a
             href="#topo"
             onClick={(e) => {
@@ -711,7 +711,7 @@ const buildCustomerId = (whatsapp) => {
             <img
               src={logoMusicaSurpresa}
               alt="Música Surpresa"
-              className="h-14 w-auto lg:h-16"
+              className="h-12 w-auto lg:h-16"
             />
           </a>
 
@@ -766,7 +766,7 @@ if (element) {
               type="button"
               aria-label="Abrir menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#D8D4CE] bg-white text-[#0B2454] shadow-sm lg:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#D8D4CE] bg-white text-[#0B2454] shadow-sm lg:hidden"
             >
               <span className="text-xl">{mobileMenuOpen ? "✕" : "☰"}</span>
             </button>
@@ -836,18 +836,18 @@ if (element) {
       </header>
 
       <section className="relative overflow-hidden" style={{ backgroundColor: BRAND.cream }}>
-        <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 lg:grid-cols-2 lg:px-10 lg:py-8">
-          <div className="flex min-h-[400px] flex-col justify-start pt-4 lg:pt-6">
-            <div className="max-w-2xl">
-              <h1 className="hidden lg:block min-h-[170px] max-w-[600px] text-[34px] font-black leading-[0.98] tracking-[-0.03em] sm:text-[38px] lg:text-[44px]" style={{ color: BRAND.text, opacity: 0.85 }}>
+        <div className="mx-auto grid max-w-7xl items-start gap-5 px-4 py-5 lg:grid-cols-2 lg:gap-8 lg:px-10 lg:py-8">
+          <div className="flex flex-col justify-start pt-1 lg:min-h-[400px] lg:pt-6">
+            <div className="mx-auto max-w-[340px] text-center sm:max-w-[520px] lg:mx-0 lg:max-w-2xl lg:text-left">
+              <h1 className="mx-auto max-w-[340px] text-[31px] font-black leading-[1.02] tracking-[-0.04em] sm:max-w-[520px] sm:text-[36px] lg:mx-0 lg:min-h-[170px] lg:max-w-[600px] lg:text-[44px]" style={{ color: BRAND.text, opacity: 0.85 }}>
                 {activeHeroSlide.title}
               </h1>
 
-              <p className="hidden lg:block mt-4 min-h-[96px] max-w-[680px] text-[18px] font-medium leading-[1.6] lg:text-[20px]" style={{ color: BRAND.muted, opacity: 0.75 }}>
+              <p className="mx-auto mt-3 max-w-[340px] text-[15px] font-medium leading-[1.55] sm:max-w-[520px] sm:text-[16px] lg:mx-0 lg:min-h-[96px] lg:max-w-[680px] lg:text-[20px]" style={{ color: BRAND.muted, opacity: 0.75 }}>
                 {activeHeroSlide.description}
               </p>
 
-              <div className="mt-7 flex min-h-[92px] flex-wrap gap-3 text-[14px] font-semibold lg:gap-4 lg:text-[15px]" style={{ color: BRAND.terracottaDark }}>
+              <div className="hidden mt-7 min-h-[92px] flex-wrap gap-3 text-[14px] font-semibold lg:flex lg:gap-4 lg:text-[15px]" style={{ color: BRAND.terracottaDark }}>
                 {activeHeroSlide.pills.map((pill) => (
                   <span
                     key={pill}
@@ -867,19 +867,19 @@ if (element) {
             </div>
           </div>
 
-          <div className="flex min-h-[430px] items-start justify-end pt-4 lg:pt-6">
-            <div className="relative h-[340px] w-full max-w-[600px] overflow-hidden rounded-[34px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] lg:h-[375px]" style={{ backgroundColor: BRAND.terracottaSoft }}>
+          <div className="flex items-start justify-end pt-0 lg:min-h-[430px] lg:pt-6">
+            <div className="relative h-[260px] w-full max-w-[600px] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:h-[320px] lg:h-[375px] lg:rounded-[34px]" style={{ backgroundColor: BRAND.terracottaSoft }}>
               <img
                 src={activeHeroSlide.image}
                 alt={activeHeroSlide.imageAlt}
-                className="h-full w-full object-cover transition-opacity duration-700"
+                className="h-full w-full object-cover object-[center_60%] transition-opacity duration-700 lg:object-center"
               />
             </div>
           </div>
         </div>
 
         <div className="border-t border-black/5" style={{ backgroundColor: BRAND.warmBg }}>
-          <div className="mx-auto max-w-7xl px-4 py-8 lg:px-10">
+          <div className="mx-auto max-w-7xl px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <a
                 href="#formulario"
@@ -887,12 +887,12 @@ if (element) {
                   backgroundColor: BRAND.terracotta,
                   boxShadow: "0 14px 34px rgba(201,79,54,0.22)",
                 }}
-                className="inline-flex min-h-[68px] items-center justify-center rounded-[18px] px-8 text-[18px] font-black text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-xl lg:min-w-[400px] lg:px-10 lg:text-[20px]"
+                className="order-2 inline-flex min-h-[68px] items-center justify-center rounded-[18px] px-8 text-[18px] font-black text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-xl lg:order-none lg:min-w-[400px] lg:px-10 lg:text-[20px]"
               >
                 {activeHeroSlide.cta}
               </a>
 
-              <div className="grid gap-4 lg:flex lg:items-center lg:gap-6">
+              <div className="order-1 grid gap-4 lg:order-none lg:flex lg:items-center lg:gap-6">
                 <div className="flex items-center gap-4">
                   <div
                     className="flex h-14 w-14 items-center justify-center rounded-full text-[26px]"
@@ -936,7 +936,7 @@ if (element) {
                   </div>
                   <div>
                     <p className="text-[18px] font-black leading-none lg:text-[20px]" style={{ color: BRAND.navy }}>
-                      Presente inesquecível
+                      Presente Inesquecível
                     </p>
                     <p className="mt-2 text-[15px] leading-none lg:text-[16px]" style={{ color: BRAND.muted }}>
                       Emociona de verdade
@@ -997,13 +997,32 @@ if (element) {
     ))}
   </ul>
 
-<div className="mt-3 text-sm font-semibold text-[#6B7280] lg:whitespace-nowrap">
-  🔒 Pagamento 100% seguro • Parcele em até 12x • Satisfação garantida
+<div className="mt-4 lg:mt-3">
+  <div className="grid grid-cols-3 overflow-hidden rounded-2xl border border-[#E8DDD2] bg-white/60 text-center shadow-sm lg:hidden">
+    <div className="flex flex-col items-center justify-start gap-2 px-2 py-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FCE7DD] text-lg">🔒</span>
+      <span className="text-[11px] font-bold leading-tight text-[#5B6474]">Pagamento<br />seguro</span>
+    </div>
+
+    <div className="flex flex-col items-center justify-start gap-2 border-x border-[#E8DDD2] px-2 py-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FCE7DD] text-lg">💳</span>
+      <span className="text-[11px] font-bold leading-tight text-[#5B6474]">Parcele<br />em até 12x</span>
+    </div>
+
+    <div className="flex flex-col items-center justify-start gap-2 px-2 py-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FCE7DD] text-lg">✨</span>
+      <span className="text-[11px] font-bold leading-tight text-[#5B6474]">Satisfação<br />garantida</span>
+    </div>
+  </div>
+
+  <div className="hidden text-sm font-semibold leading-6 text-[#6B7280] lg:block">
+    🔒 Pagamento 100% seguro • Parcele em até 12x • Satisfação garantida
+  </div>
 </div>
 </div>
-                  <div className="flex flex-col items-end gap-3 pr-4 lg:w-[220px] lg:flex-shrink-0 lg:pr-6">
+                  <div className="flex flex-col items-center gap-3 pr-0 text-center lg:items-end lg:pr-6 lg:text-right lg:w-[220px] lg:flex-shrink-0">
                     <div
-                      className="text-right text-4xl font-black tracking-[0.03em] whitespace-nowrap"
+                      className="mt-4 text-4xl font-black tracking-[0.03em] whitespace-nowrap text-center lg:text-right"
                       style={{ color: plan.color }}
                     >
                       {plan.price}
@@ -1029,7 +1048,7 @@ if (element) {
                           window.scrollTo({ top: offsetPosition, behavior: "smooth" });
                         }, 0);
                       }}
-                      className={`ml-auto flex w-auto min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 ${
+                      className={`mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:mt-0 lg:ml-auto lg:w-auto ${
                         plan.featured ? "shadow-lg" : "shadow-sm"
                       }`}
                       style={{ backgroundColor: plan.color }}
@@ -1043,52 +1062,56 @@ if (element) {
         </div>
       </section>
 
-      <section id="como-funciona" className="scroll-mt-30 pt-4 pb-10 lg:scroll-mt-20" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="como-funciona" className="scroll-mt-30 pt-0 pb-4 lg:scroll-mt-20 lg:pt-4 lg:pb-10" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
-            <h2 className="mt-8 text-3xl font-black sm:text-4xl lg:text-4xl" style={{ color: BRAND.navy }}>
+            <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-8 lg:text-4xl" style={{ color: BRAND.navy }}>
               É simples, rápido e feito com muito carinho
             </h2>
           </div>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-8">
             {steps.map((step, index) => (
-              <div key={step.title} className="text-center">
+              <div key={step.title} className="rounded-[24px] border border-[#E8DDD2] bg-white/55 px-5 py-6 text-center shadow-sm lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none">
                 <div
-                  className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-3xl text-white shadow-md"
-                  style={{ backgroundColor: step.color }}
+                  className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl text-2xl shadow-[0_10px_24px_rgba(178,79,54,0.14)] ring-1 ring-[#F3D6C8] lg:h-20 lg:w-20 lg:rounded-full lg:text-3xl"
+                  style={{ backgroundColor: "#FFF1EA", color: step.color }}
                 >
                   {step.icon}
                 </div>
-                <h3 className="mt-7 text-lg font-bold" style={{ color: BRAND.navy }}>
+                <h3 className="mt-4 text-base font-black leading-tight lg:mt-7 lg:text-lg" style={{ color: BRAND.navy }}>
                   {index + 1}. {step.title}
                 </h3>
-                <p className="mt-3 text-sm leading-7" style={{ color: BRAND.muted }}>{step.text}</p>
+                <p className="mt-2 text-sm leading-6 lg:mt-3 lg:leading-7" style={{ color: BRAND.muted }}>{step.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="musicas" className="scroll-mt-24 py-20 lg:scroll-mt-10" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="musicas" className="scroll-mt-24 pt-8 pb-8 lg:scroll-mt-10 lg:py-20" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-9">
           <div className="text-center">
-            <h2 className="mt-3 text-4xl font-black sm:text-4xl" style={{ color: BRAND.navy }}>
+            <h2 className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-3 lg:text-4xl" style={{ color: BRAND.navy }}>
               ✨Músicas criadas para emocionar✨
             </h2>
-            <p className="mx-auto mt-4 max-w-4xl text-base leading-7 text-[#4B5563]">
-              Ouça músicas criadas por nós para comprovar a qualidade, emoção e cuidado presentes em cada pedido
+            <p className="mx-auto mt-3 max-w-4xl text-[15px] leading-7 text-[#4B5563] lg:mt-4 lg:text-base">
+              Ouça músicas criadas por nós e comprove a qualidade, emoção e cuidado com cada pedido
             </p>
           </div>
 
-          <div className="mx-auto mt-10 max-w-7xl rounded-[28px] border p-5 shadow-sm lg:p-7" style={{ backgroundColor: BRAND.cream, borderColor: BRAND.terracottaSoft }}>
+          <div className="mx-auto mt-8 max-w-7xl rounded-[28px] border p-3 shadow-sm lg:mt-10 lg:p-7" style={{ backgroundColor: BRAND.cream, borderColor: BRAND.terracottaSoft }}>
             <audio
               ref={audioRef}
               src={demoSongs[currentSongIndex].audio}
               onEnded={() => setIsPlaying(false)}
             />
 
-            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory lg:grid lg:grid-cols-5 lg:overflow-visible" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="mb-3 text-[11px] font-bold tracking-[0.14em] text-[#B24F36] lg:hidden text-center">
+              Ouça algumas de nossas músicas
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 px-1 pb-3 lg:grid-cols-5 lg:gap-4 lg:px-0 lg:pb-2">
               {visibleDemoSongs.map((song, index) => {
                 const isActive = song.songIndex === currentSongIndex;
 
@@ -1097,7 +1120,7 @@ if (element) {
                     key={`${song.title}-${song.songIndex}`}
                     type="button"
                     onClick={() => handleSelectSong(song.songIndex)}
-                    className={`snap-start flex min-h-[178px] min-w-[260px] flex-col justify-between rounded-[22px] border p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-md lg:min-w-0 ${isActive ? "shadow-lg scale-[1.03]" : "shadow-sm"}`}
+                    className={`flex min-h-[166px] flex-col justify-between rounded-[20px] border p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-md lg:min-h-[178px] lg:rounded-[22px] lg:p-5 ${isActive ? "shadow-lg lg:scale-[1.03]" : "shadow-sm"}`}
                     style={{
                       backgroundColor: isActive ? '#FFF1EA' : '#FFFFFF',
                       borderColor: isActive ? BRAND.terracotta : BRAND.terracottaSoft,
@@ -1105,34 +1128,28 @@ if (element) {
                     }}
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-3">
-                        <span
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-black text-white"
-                          style={{ backgroundColor: isActive ? BRAND.terracotta : BRAND.navy }}
-                        >
-                          {index + 1}
-                        </span>
-                        <span className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: isActive ? BRAND.terracotta : BRAND.muted }}>
-                          {isActive ? "Tocando" : "Ouvir"}
-                        </span>
-                      </div>
 
-                      <h3 className="mt-5 text-xl font-black leading-tight tracking-[-0.03em]" style={{ color: BRAND.navy }}>
+                      <h3 className="mt-4 text-base font-black leading-tight tracking-[-0.03em] lg:mt-5 lg:text-xl" style={{ color: BRAND.navy }}>
                         {song.title}
                       </h3>
 
-                      <p className="mt-3 text-sm font-semibold leading-6" style={{ color: BRAND.muted }}>
+                      <p className="mt-2 text-xs font-semibold leading-5 lg:mt-3 lg:text-sm lg:leading-6" style={{ color: BRAND.muted }}>
                         {song.occasion}
                       </p>
                     </div>
 
-                    <div className="mt-5 flex items-center justify-between gap-3 border-t pt-4" style={{ borderColor: BRAND.terracottaSoft }}>
-                      <span className="text-xs font-bold leading-5" style={{ color: BRAND.terracotta }}>
-                        {song.style}
-                      </span>
+                    <div className="mt-4 flex items-end justify-between gap-2 border-t pt-3 lg:mt-5 lg:gap-3 lg:pt-4" style={{ borderColor: BRAND.terracottaSoft }}>
+                      <div>
+                        <span className="block text-[11px] font-bold leading-4 lg:text-xs lg:leading-5" style={{ color: BRAND.terracotta }}>
+                          {song.style}
+                        </span>
+                        <span className="mt-1 block text-[9px] font-semibold tracking-[0.04em]" style={{ color: isActive ? BRAND.terracotta : BRAND.muted }}>
+                          {isActive ? "Tocando" : "Ouvir"}
+                        </span>
+                      </div>
                       <span
-                        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-black text-white transition-all duration-300"
-                        style={{ backgroundColor: isActive ? BRAND.terracotta : BRAND.navy }}
+                        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-black text-white transition-all duration-300 lg:h-10 lg:w-10 lg:text-sm"
+                        style={{ backgroundColor: isActive ? BRAND.terracotta : '#9CA3AF' }}
                       >
                         {isActive && isPlaying ? "Ⅱ" : "▶"}
                       </span>
@@ -1141,31 +1158,32 @@ if (element) {
                 );
               })}
             </div>
+
           </div>
         </div>
       </section>
-<section id="depoimentos" className="scroll-mt-24 py-20 lg:scroll-mt-14" style={{ backgroundColor: BRAND.terracotta }}>
+<section id="depoimentos" className="scroll-mt-24 py-12 lg:scroll-mt-14 lg:py-20" style={{ backgroundColor: BRAND.terracotta }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
             <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracottaSoft }}>
               Depoimentos
             </p>
-            <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
+            <h2 className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] text-white sm:text-3xl lg:mt-3 lg:text-4xl">
               Histórias reais, <span style={{ color: BRAND.terracottaSoft }}>emoções verdadeiras</span>
             </h2>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 lg:mt-12 lg:grid-cols-3 lg:gap-6">
             {testimonials.map((item) => (
-              <div key={item.name} className="rounded-[24px] bg-white p-6 shadow-lg">
-                <p className="text-base leading-8 text-[#374151]">“{item.quote}”</p>
-                <div className="mt-6 border-t border-black/5 pt-4">
-                  <p className="font-bold text-[#0B2454]">{item.name}</p>
-                  <p className="text-sm text-[#6B7280]">{item.city}</p>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: BRAND.terracotta }}>
+              <div key={item.name} className="rounded-[22px] bg-white px-6 py-5 shadow-lg lg:p-6">
+                <p className="text-sm leading-6 text-[#374151] lg:text-base lg:leading-8">“{item.quote}”</p>
+                <div className="mt-4 border-t border-black/5 pt-3">
+                  <p className="text-[15px] font-bold text-[#0B2454]">{item.name}</p>
+                  <p className="text-xs text-[#6B7280]">{item.city}</p>
+                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.terracotta }}>
                     {item.role}
                   </p>
-                  <p className="mt-3 text-sm" style={{ color: BRAND.terracotta }}>★★★★★</p>
+                  <p className="mt-2 text-sm" style={{ color: BRAND.terracotta }}>★★★★★</p>
                 </div>
               </div>
             ))}
@@ -1175,11 +1193,11 @@ if (element) {
 
       <section id="formulario" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto grid max-w-7xl items-start gap-10 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
-          <div className="w-full overflow-hidden rounded-[28px] shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
+          <div className="w-full overflow-hidden rounded-[12px] shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
             <img
               src={slide11}
               alt="Pessoas em um momento especial"
-              className="h-[500px] w-full object-cover object-[center_35%] lg:h-[520px]"
+              className="h-[500px] w-full object-cover object-left lg:h-[520px] lg:object-[center_35%]"
             />
           </div>
 
@@ -1196,7 +1214,7 @@ if (element) {
               Preencha os dados iniciais abaixo para começarmos sua música.
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold" style={{ color: BRAND.terracottaDark }}>
+            <div className="mt-5 hidden flex-wrap gap-3 text-sm font-semibold lg:flex" style={{ color: BRAND.terracottaDark }}>
               <span className="rounded-full px-4 py-2" style={{ backgroundColor: BRAND.terracottaSoft }}>Resposta Rápida</span>
               <span className="rounded-full px-4 py-2" style={{ backgroundColor: BRAND.terracottaSoft }}>Atendimento Humanizado</span>
               <span className="rounded-full px-4 py-2" style={{ backgroundColor: BRAND.terracottaSoft }}>100% Personalizado</span>
@@ -1231,12 +1249,9 @@ if (element) {
               />
 
 
-              <input
-                type="text"
-                value={formData.plan}
-                readOnly
-                className="rounded-xl border border-[#E8DDD2] bg-[#F8F5F1] px-4 py-3 text-sm font-semibold text-[#0B2454] outline-none sm:col-span-2"
-              />
+              <div className="rounded-xl border border-[#E8DDD2] bg-[#F8F5F1] px-4 py-3 text-sm font-semibold text-[#0B2454] sm:col-span-2">
+                {formData.plan}
+              </div>
               <input type="hidden" name="plan" value={formData.plan} />
             </div>
 
@@ -1259,7 +1274,7 @@ if (element) {
         </div>
 
       </section>
-      <section id="faq" className="scroll-mt-24 py-16 lg:scroll-mt-16" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="faq" className="scroll-mt-24 pt-2 pb-16 lg:scroll-mt-16 lg:pt-10" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
             <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>
@@ -1361,7 +1376,7 @@ if (element) {
             <ul className="mt-4 space-y-3 text-sm text-white/80">
               <li>(11) 94078-7078</li>
               <li>contato@musicasurpresa.com.br</li>
-              <li>Instagram: @musicasurpresa</li>
+              <li>Instagram: @musicasurpresa.br</li>
             </ul>
           </div>
         </div>
