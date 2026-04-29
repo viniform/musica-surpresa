@@ -15,18 +15,39 @@ export default function MusicFormPage() {
 
   const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
 
-  const syncToSheet = async (payload) => {
-    if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+  const syncToSheet = async (payload, options = {}) => {
+    const body = JSON.stringify(payload);
+
+    console.log("[Google Sheets] Payload formulário:", payload);
+    console.log("[Google Sheets] Payload formulário JSON:", body);
+
+    if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+      console.warn("[Google Sheets] Webhook não configurado no MusicFormPage.");
+      return;
+    }
 
     try {
+      if (options.preferBeacon !== false && navigator.sendBeacon) {
+        const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
+        const sent = navigator.sendBeacon(GOOGLE_SHEETS_WEBHOOK_URL, blob);
+
+        if (sent) {
+          console.log("[Google Sheets] Envio por sendBeacon disparado no formulário.");
+          return;
+        }
+      }
+
       await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
+        keepalive: true,
         headers: {
           "Content-Type": "text/plain;charset=utf-8",
         },
-        body: JSON.stringify(payload),
+        body,
       });
+
+      console.log("[Google Sheets] Envio por fetch disparado no formulário.");
     } catch (error) {
       console.error("Erro ao sincronizar formulário", error);
     }
@@ -60,11 +81,44 @@ export default function MusicFormPage() {
       const leadData = JSON.parse(storedLead);
       if (!leadData.orderId) return;
 
-      syncToSheet({
+      const startedKey = `musicFormStarted:${leadData.orderId}`;
+      if (sessionStorage.getItem(startedKey) === "true") return;
+      sessionStorage.setItem(startedKey, "true");
+
+      const startedPayload = {
         orderId: leadData.orderId,
         customerId: leadData.customerId,
         stage: "formulario_iniciado",
-      });
+        paymentId: "",
+        paymentStatus: "",
+        paymentStatusDetail: "",
+        paymentMethod: "",
+        planId: leadData.planId || "",
+        planTitle: leadData.planTitle || leadData.plan || selectedPlan,
+        customerName: leadData.customerName || leadData.name || "",
+        email: leadData.email || "",
+        whatsapp: leadData.whatsapp || "",
+        recipient: "",
+        relationship: "",
+        occasion: "",
+        description: "",
+        message: "",
+        moments: "",
+        specialPhrase: "",
+        style: "",
+        voiceType: "",
+        observations: "",
+        amount: leadData.amount || "",
+        externalReference: leadData.externalReference || leadData.orderId,
+      };
+
+      sessionStorage.setItem("musicOrderDraft", JSON.stringify({
+        ...leadData,
+        name: startedPayload.customerName,
+        plan: startedPayload.planTitle,
+      }));
+
+      syncToSheet(startedPayload);
     } catch (error) {
       console.error("Erro ao sincronizar início do formulário", error);
     }
@@ -106,6 +160,11 @@ export default function MusicFormPage() {
       orderId: form.orderId,
       customerId: form.customerId,
       stage: "formulario_completo",
+      paymentId: "",
+      paymentStatus: "",
+      paymentStatusDetail: "",
+      paymentMethod: "",
+      planId: lead.planId || "",
       planTitle: selectedPlan,
       customerName: form.name,
       email: form.email,
@@ -120,11 +179,17 @@ export default function MusicFormPage() {
       style: form.style,
       voiceType: form.voiceType,
       observations: form.observations,
+      amount: lead.amount || "",
+      externalReference: form.orderId,
     };
 
     sessionStorage.setItem("musicOrderDraft", JSON.stringify({ ...form, plan: selectedPlan }));
 
-    await syncToSheet(payload);
+    console.log("[MusicFormPage] Enviando formulario_completo para Google Sheets", payload);
+
+    await syncToSheet(payload, { preferBeacon: false });
+
+    console.log("[MusicFormPage] Redirecionando para /upsell após formulario_completo");
 
     window.location.href = "/upsell";
   };
@@ -315,7 +380,10 @@ export default function MusicFormPage() {
 
   <button
     type="button"
-    onClick={handleSubmit}
+    onClick={() => {
+      console.log("[MusicFormPage] Botão Criar minha música clicado.");
+      handleSubmit();
+    }}
     className="mt-4 rounded-xl bg-[#B45D5D] px-6 py-4 text-sm font-bold text-white"
   >
     Criar minha música

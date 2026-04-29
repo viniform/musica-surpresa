@@ -119,22 +119,41 @@ const buildCustomerId = (whatsapp) => {
 };
 
 const syncLeadToSheet = async (payload) => {
+  const body = JSON.stringify(payload);
+
+  console.log("[Google Sheets] URL configurada:", GOOGLE_SHEETS_WEBHOOK_URL);
+  console.log("[Google Sheets] Payload lead_criado:", payload);
+  console.log("[Google Sheets] Payload lead_criado JSON:", body);
+
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
-    console.warn("Webhook do Google Sheets não configurado. Defina REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL.");
+    console.warn("[Google Sheets] Webhook não configurado. Defina REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL.");
     return;
   }
 
   try {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
+      const sent = navigator.sendBeacon(GOOGLE_SHEETS_WEBHOOK_URL, blob);
+
+      if (sent) {
+        console.log("[Google Sheets] Envio por sendBeacon disparado para lead_criado.");
+        return;
+      }
+    }
+
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
       method: "POST",
       mode: "no-cors",
+      keepalive: true,
       headers: {
         "Content-Type": "text/plain;charset=utf-8",
       },
-      body: JSON.stringify(payload),
+      body,
     });
+
+    console.log("[Google Sheets] Envio por fetch disparado para lead_criado.");
   } catch (error) {
-    console.error("Erro ao sincronizar lead com Google Sheets", error);
+    console.error("[Google Sheets] Erro ao sincronizar lead_criado", error);
   }
 };
   const handleFormChange = (e) => {
@@ -1301,7 +1320,10 @@ if (element) {
 
             <button
               type="button"
-              onClick={handleContinueToMusicForm}
+              onClick={() => {
+                console.log("[Mini formulário] Botão CRIAR MINHA MÚSICA clicado.");
+                handleContinueToMusicForm();
+              }}
               style={{
                 backgroundColor: BRAND.terracotta,
                 boxShadow: "0 10px 22px rgba(169,98,96,0.18)",

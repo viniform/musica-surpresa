@@ -72,18 +72,38 @@ function readStoredOrder() {
 
 const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
 
-async function syncToSheet(payload) {
-  if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+async function syncToSheet(payload, options = {}) {
+  const body = JSON.stringify(payload);
+
+  console.log("[Google Sheets] Payload upsell:", payload);
+
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    console.warn("[Google Sheets] Webhook não configurado no UpsellPage.");
+    return;
+  }
 
   try {
+    if (options.preferBeacon !== false && navigator.sendBeacon) {
+      const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
+      const sent = navigator.sendBeacon(GOOGLE_SHEETS_WEBHOOK_URL, blob);
+
+      if (sent) {
+        console.log("[Google Sheets] Envio por sendBeacon disparado no upsell.");
+        return;
+      }
+    }
+
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
       method: "POST",
       mode: "no-cors",
+      keepalive: true,
       headers: {
         "Content-Type": "text/plain;charset=utf-8",
       },
-      body: JSON.stringify(payload),
+      body,
     });
+
+    console.log("[Google Sheets] Envio por fetch disparado no upsell.");
   } catch (error) {
     console.error("Erro ao sincronizar upsell", error);
   }
@@ -105,12 +125,12 @@ export default function UpsellPage({
     ...storedOrder,
   };
 
-const initialSelectedPlanId = useMemo(() => {
-  if (!storedOrder.plan) return initialPlanId;
+  const initialSelectedPlanId = useMemo(() => {
+    if (!storedOrder.plan) return initialPlanId;
 
-  const matchedPlan = plans.find((plan) => storedOrder.plan.includes(plan.name));
-  return matchedPlan?.id || initialPlanId;
-}, [storedOrder.plan, initialPlanId, plans]);
+    const matchedPlan = plans.find((plan) => storedOrder.plan.includes(plan.name));
+    return matchedPlan?.id || initialPlanId;
+  }, [storedOrder.plan, initialPlanId, plans]);
   
   const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
 
@@ -131,10 +151,15 @@ const initialSelectedPlanId = useMemo(() => {
 
     if (!stored.orderId) return;
 
+    const viewedKey = `upsellViewed:${stored.orderId}`;
+    if (sessionStorage.getItem(viewedKey) === "true") return;
+    sessionStorage.setItem(viewedKey, "true");
+
     syncToSheet({
       orderId: stored.orderId,
       customerId: stored.customerId,
       stage: "upsell_visualizado",
+      planId: initialPlan.id,
       planTitle: initialPlan.name,
       amount: initialPlan.price,
       customerName: stored.name || stored.customerName || "",
@@ -154,7 +179,8 @@ const initialSelectedPlanId = useMemo(() => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const handleContinue = async () => {
+const handleContinue = async () => {
+  console.log("[UpsellPage] Botão SEGUIR PARA PAGAMENTO clicado.");
     if (effectiveCustomer.orderId) {
       const checkoutPayload = {
         orderId: effectiveCustomer.orderId,
@@ -187,7 +213,8 @@ const initialSelectedPlanId = useMemo(() => {
         amount: selectedPlan.price,
       }));
 
-      await syncToSheet(checkoutPayload);
+console.log("[UpsellPage] Enviando checkout_iniciado para Google Sheets", checkoutPayload);
+await syncToSheet(checkoutPayload, { preferBeacon: false });
     }
 
     if (typeof onContinueToPayment === "function") {
