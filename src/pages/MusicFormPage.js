@@ -53,13 +53,22 @@ export default function MusicFormPage() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (!form.orderId) return;
+    const storedLead = sessionStorage.getItem("musicOrderLead");
+    if (!storedLead) return;
 
-    syncToSheet({
-      orderId: form.orderId,
-      customerId: form.customerId,
-      stage: "formulario_iniciado",
-    });
+    try {
+      const leadData = JSON.parse(storedLead);
+      if (!leadData.orderId) return;
+
+      syncToSheet({
+        orderId: leadData.orderId,
+        customerId: leadData.customerId,
+        stage: "formulario_iniciado",
+      });
+    } catch (error) {
+      console.error("Erro ao sincronizar início do formulário", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (field, value) => {

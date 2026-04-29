@@ -105,13 +105,13 @@ export default function UpsellPage({
     ...storedOrder,
   };
 
-  const initialSelectedPlanId = useMemo(() => {
-    if (!effectiveCustomer?.plan) return initialPlanId;
+const initialSelectedPlanId = useMemo(() => {
+  if (!storedOrder.plan) return initialPlanId;
 
-    const matchedPlan = plans.find((plan) => effectiveCustomer.plan.includes(plan.name));
-    return matchedPlan?.id || initialPlanId;
-  }, [effectiveCustomer?.plan, initialPlanId, plans]);
-
+  const matchedPlan = plans.find((plan) => storedOrder.plan.includes(plan.name));
+  return matchedPlan?.id || initialPlanId;
+}, [storedOrder.plan, initialPlanId, plans]);
+  
   const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
 
   const selectedPlan = useMemo(() => {
@@ -123,31 +123,37 @@ export default function UpsellPage({
   }, [initialSelectedPlanId]);
 
   React.useEffect(() => {
-    if (!effectiveCustomer.orderId) return;
+    const stored = readStoredOrder();
+    const initialPlan = plans.find((plan) => {
+      if (!stored.plan) return plan.id === initialPlanId;
+      return stored.plan.includes(plan.name);
+    }) || plans.find((plan) => plan.id === initialPlanId) || plans[0];
+
+    if (!stored.orderId) return;
 
     syncToSheet({
-      orderId: effectiveCustomer.orderId,
-      customerId: effectiveCustomer.customerId,
+      orderId: stored.orderId,
+      customerId: stored.customerId,
       stage: "upsell_visualizado",
-      planTitle: selectedPlan.name,
-      amount: selectedPlan.price,
-      customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
-      email: effectiveCustomer.email || "",
-      whatsapp: effectiveCustomer.whatsapp || "",
-      recipient: effectiveCustomer.recipient || "",
-      relationship: effectiveCustomer.relationship || "",
-      occasion: effectiveCustomer.occasion || "",
-      description: effectiveCustomer.description || "",
-      message: effectiveCustomer.message || "",
-      moments: effectiveCustomer.moments || "",
-      specialPhrase: effectiveCustomer.specialPhrase || "",
-      style: effectiveCustomer.style || "",
-      voiceType: effectiveCustomer.voiceType || "",
-      observations: effectiveCustomer.observations || "",
-      externalReference: effectiveCustomer.orderId,
+      planTitle: initialPlan.name,
+      amount: initialPlan.price,
+      customerName: stored.name || stored.customerName || "",
+      email: stored.email || "",
+      whatsapp: stored.whatsapp || "",
+      recipient: stored.recipient || "",
+      relationship: stored.relationship || "",
+      occasion: stored.occasion || "",
+      description: stored.description || "",
+      message: stored.message || "",
+      moments: stored.moments || "",
+      specialPhrase: stored.specialPhrase || "",
+      style: stored.style || "",
+      voiceType: stored.voiceType || "",
+      observations: stored.observations || "",
+      externalReference: stored.orderId,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const handleContinue = async () => {
     if (effectiveCustomer.orderId) {
       const checkoutPayload = {
