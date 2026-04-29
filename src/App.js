@@ -26,6 +26,7 @@ export default function App() {
 
 
   const WHATSAPP_NUMBER = "5511940787078";
+  const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
 
   const BRAND = {
     terracotta: "#B24F36",
@@ -116,6 +117,26 @@ const buildCustomerId = (whatsapp) => {
   const digits = normalizeWhatsapp(whatsapp);
   return digits ? `55${digits}` : "";
 };
+
+const syncLeadToSheet = async (payload) => {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    console.warn("Webhook do Google Sheets não configurado. Defina REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL.");
+    return;
+  }
+
+  try {
+    await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error("Erro ao sincronizar lead com Google Sheets", error);
+  }
+};
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
@@ -138,7 +159,7 @@ const buildCustomerId = (whatsapp) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleContinueToMusicForm = () => {
+  const handleContinueToMusicForm = async () => {
     if (!formData.name || !formData.whatsapp || !formData.email) {
       alert("Preencha nome, WhatsApp e e-mail para continuar.");
       return;
@@ -166,19 +187,42 @@ const buildCustomerId = (whatsapp) => {
     const orderId = existingOrderId || generateOrderId();
     const customerId = buildCustomerId(formData.whatsapp);
 
-    sessionStorage.setItem(
-      "musicOrderLead",
-      JSON.stringify({
-        orderId,
-        customerId,
-        name: normalizeName(formData.name),
-        whatsapp: formData.whatsapp,
-        email: formData.email,
-        plan: formData.plan,
-      })
-    );
+    const leadPayload = {
+      orderId,
+      customerId,
+      stage: "lead_criado",
+      paymentId: "",
+      paymentStatus: "",
+      paymentStatusDetail: "",
+      paymentMethod: "",
+      planId: initialPlanId,
+      planTitle: formData.plan,
+      customerName: normalizeName(formData.name),
+      email: formData.email,
+      whatsapp: formData.whatsapp,
+      recipient: "",
+      relationship: "",
+      occasion: "",
+      description: "",
+      message: "",
+      moments: "",
+      specialPhrase: "",
+      style: "",
+      voiceType: "",
+      observations: "",
+      amount: formData.plan.match(/R\$\s*([\d.,]+)/)?.[1] || "",
+      externalReference: orderId,
+    };
+
+    sessionStorage.setItem("musicOrderLead", JSON.stringify({
+      ...leadPayload,
+      name: leadPayload.customerName,
+      plan: formData.plan,
+    }));
 
     sessionStorage.setItem("selectedPlan", formData.plan);
+
+    await syncLeadToSheet(leadPayload);
 
     window.location.href = "/criar-musica";
   };

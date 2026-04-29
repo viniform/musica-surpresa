@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.png";
 
 export default function MusicFormPage() {
@@ -12,6 +12,25 @@ export default function MusicFormPage() {
   }
 
   const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 125,00";
+
+  const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
+
+  const syncToSheet = async (payload) => {
+    if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+
+    try {
+      await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (error) {
+      console.error("Erro ao sincronizar formulário", error);
+    }
+  };
 
   const [form, setForm] = useState({
     orderId: lead.orderId || "",
@@ -33,8 +52,24 @@ export default function MusicFormPage() {
 
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    if (!form.orderId) return;
+
+    syncToSheet({
+      orderId: form.orderId,
+      customerId: form.customerId,
+      stage: "formulario_iniciado",
+    });
+  }, []);
+
   const handleChange = (field, value) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    const updated = { ...form, [field]: value };
+    setForm(updated);
+
+    sessionStorage.setItem("musicOrderDraft", JSON.stringify({
+      ...updated,
+      plan: selectedPlan
+    }));
   };
 
   const validate = () => {
@@ -55,13 +90,33 @@ export default function MusicFormPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
 
-    // salva dados no sessionStorage
+    const payload = {
+      orderId: form.orderId,
+      customerId: form.customerId,
+      stage: "formulario_completo",
+      planTitle: selectedPlan,
+      customerName: form.name,
+      email: form.email,
+      whatsapp: form.whatsapp,
+      recipient: form.recipient,
+      relationship: form.relationship,
+      occasion: form.occasion,
+      description: form.description,
+      message: form.message,
+      moments: form.moments,
+      specialPhrase: form.specialPhrase,
+      style: form.style,
+      voiceType: form.voiceType,
+      observations: form.observations,
+    };
+
     sessionStorage.setItem("musicOrderDraft", JSON.stringify({ ...form, plan: selectedPlan }));
 
-    // redireciona para upsell
+    await syncToSheet(payload);
+
     window.location.href = "/upsell";
   };
 
@@ -93,7 +148,7 @@ export default function MusicFormPage() {
               Vamos criar a sua Música Surpresa
             </h1>
             <p className="mt-4 text-base leading-7 text-[#5B6474]">
-              Responda algumas perguntas para que possamos transformar sua história em uma música única, emocionante e feita sob medida.
+              Responda algumas perguntas para que possamos transformar sua história em uma música única!
             </p>
           </section>
 

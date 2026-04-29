@@ -56,6 +56,39 @@ function formatCurrency(value) {
   }).format(value);
 }
 
+function readStoredOrder() {
+  try {
+    const draft = sessionStorage.getItem("musicOrderDraft");
+    const lead = sessionStorage.getItem("musicOrderLead");
+    return {
+      ...(lead ? JSON.parse(lead) : {}),
+      ...(draft ? JSON.parse(draft) : {}),
+    };
+  } catch (error) {
+    console.error("Erro ao ler dados do pedido", error);
+    return {};
+  }
+}
+
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
+
+async function syncToSheet(payload) {
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) return;
+
+  try {
+    await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error("Erro ao sincronizar upsell", error);
+  }
+}
+
 export default function UpsellPage({
   customer = {
     recipient: "Pessoa especial",
@@ -66,12 +99,18 @@ export default function UpsellPage({
   initialPlanId = "musica-surpresa",
   onContinueToPayment,
 }) {
-  const initialSelectedPlanId = useMemo(() => {
-    if (!customer?.plan) return initialPlanId;
+  const storedOrder = useMemo(() => readStoredOrder(), []);
+  const effectiveCustomer = {
+    ...customer,
+    ...storedOrder,
+  };
 
-    const matchedPlan = plans.find((plan) => customer.plan.includes(plan.name));
+  const initialSelectedPlanId = useMemo(() => {
+    if (!effectiveCustomer?.plan) return initialPlanId;
+
+    const matchedPlan = plans.find((plan) => effectiveCustomer.plan.includes(plan.name));
     return matchedPlan?.id || initialPlanId;
-  }, [customer?.plan, initialPlanId, plans]);
+  }, [effectiveCustomer?.plan, initialPlanId, plans]);
 
   const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
 
@@ -83,7 +122,68 @@ export default function UpsellPage({
     setSelectedPlanId(initialSelectedPlanId);
   }, [initialSelectedPlanId]);
 
-  const handleContinue = () => {
+  React.useEffect(() => {
+    if (!effectiveCustomer.orderId) return;
+
+    syncToSheet({
+      orderId: effectiveCustomer.orderId,
+      customerId: effectiveCustomer.customerId,
+      stage: "upsell_visualizado",
+      planTitle: selectedPlan.name,
+      amount: selectedPlan.price,
+      customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
+      email: effectiveCustomer.email || "",
+      whatsapp: effectiveCustomer.whatsapp || "",
+      recipient: effectiveCustomer.recipient || "",
+      relationship: effectiveCustomer.relationship || "",
+      occasion: effectiveCustomer.occasion || "",
+      description: effectiveCustomer.description || "",
+      message: effectiveCustomer.message || "",
+      moments: effectiveCustomer.moments || "",
+      specialPhrase: effectiveCustomer.specialPhrase || "",
+      style: effectiveCustomer.style || "",
+      voiceType: effectiveCustomer.voiceType || "",
+      observations: effectiveCustomer.observations || "",
+      externalReference: effectiveCustomer.orderId,
+    });
+  }, []);
+
+  const handleContinue = async () => {
+    if (effectiveCustomer.orderId) {
+      const checkoutPayload = {
+        orderId: effectiveCustomer.orderId,
+        customerId: effectiveCustomer.customerId,
+        stage: "checkout_iniciado",
+        planId: selectedPlan.id,
+        planTitle: selectedPlan.name,
+        amount: selectedPlan.price,
+        customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
+        email: effectiveCustomer.email || "",
+        whatsapp: effectiveCustomer.whatsapp || "",
+        recipient: effectiveCustomer.recipient || "",
+        relationship: effectiveCustomer.relationship || "",
+        occasion: effectiveCustomer.occasion || "",
+        description: effectiveCustomer.description || "",
+        message: effectiveCustomer.message || "",
+        moments: effectiveCustomer.moments || "",
+        specialPhrase: effectiveCustomer.specialPhrase || "",
+        style: effectiveCustomer.style || "",
+        voiceType: effectiveCustomer.voiceType || "",
+        observations: effectiveCustomer.observations || "",
+        externalReference: effectiveCustomer.orderId,
+      };
+
+      sessionStorage.setItem("musicOrderDraft", JSON.stringify({
+        ...effectiveCustomer,
+        plan: selectedPlan.name,
+        planId: selectedPlan.id,
+        planTitle: selectedPlan.name,
+        amount: selectedPlan.price,
+      }));
+
+      await syncToSheet(checkoutPayload);
+    }
+
     if (typeof onContinueToPayment === "function") {
       onContinueToPayment(selectedPlan);
       return;
@@ -144,15 +244,15 @@ export default function UpsellPage({
             <div className="mt-4 grid gap-8 md:grid-cols-3">
               <div>
                 <p className="text-sm font-semibold text-[#6B7280]">Presente para</p>
-                <p className="mt-1 text-base font-bold">{customer.recipient || "Pessoa especial"}</p>
+                <p className="mt-1 text-base font-bold">{effectiveCustomer.recipient || "Pessoa especial"}</p>
               </div>
               <div>
                 <p className="text-sm font-semibold text-[#6B7280]">Ocasião</p>
-                <p className="mt-1 text-base font-bold">{customer.occasion || "Ocasião especial"}</p>
+                <p className="mt-1 text-base font-bold">{effectiveCustomer.occasion || "Ocasião especial"}</p>
               </div>
               <div>
                 <p className="text-sm font-semibold text-[#6B7280]">Estilo desejado</p>
-                <p className="mt-1 text-base font-bold">{customer.style || "Personalizado"}</p>
+                <p className="mt-1 text-base font-bold">{effectiveCustomer.style || "Personalizado"}</p>
               </div>
             </div>
             <p className="mt-2 text-sm leading-6 text-[#5B6474]">
