@@ -19,9 +19,11 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState(-1);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showUpsell] = useState(false);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+const [currentSongIndex, setCurrentSongIndex] = useState(0);
+const [isPlaying, setIsPlaying] = useState(false);
+const [paymentCheckMessage, setPaymentCheckMessage] = useState("Consultando o status do pagamento automaticamente...");
+const [paymentCheckAttempts, setPaymentCheckAttempts] = useState(0);
+const audioRef = useRef(null);
 
 
 
@@ -568,6 +570,64 @@ const syncLeadToSheet = async (payload) => {
   const isPaymentErrorRoute = window.location.pathname === "/pagamento/erro";
 
   useEffect(() => {
+    if (!isPaymentPendingRoute) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const paymentId = params.get("payment_id") || params.get("collection_id");
+
+    if (!paymentId) {
+      setPaymentCheckMessage("Não encontramos o código do pagamento para consulta automática. Você pode aguardar alguns instantes ou falar com nosso atendimento.");
+      return;
+    }
+
+    let attempts = 0;
+    let stopped = false;
+    let timeoutId;
+
+    const checkPaymentStatus = async () => {
+      if (stopped) return;
+
+      attempts += 1;
+      setPaymentCheckAttempts(attempts);
+      setPaymentCheckMessage(`Verificando confirmação do pagamento... tentativa ${attempts}.`);
+
+      try {
+        const response = await fetch(`/api/mercado-pago/payment-status?payment_id=${encodeURIComponent(paymentId)}`);
+        const data = await response.json();
+
+        if (data.status === "approved") {
+          setPaymentCheckMessage("Pagamento confirmado. Redirecionando...");
+          window.location.href = `/pagamento/sucesso?payment_id=${encodeURIComponent(paymentId)}`;
+          return;
+        }
+
+        if (["rejected", "cancelled", "refunded", "charged_back"].includes(data.status)) {
+          setPaymentCheckMessage("Não conseguimos confirmar o pagamento. Redirecionando...");
+          window.location.href = `/pagamento/erro?payment_id=${encodeURIComponent(paymentId)}&status=${encodeURIComponent(data.status)}`;
+          return;
+        }
+
+        if (attempts >= 24) {
+          setPaymentCheckMessage("Ainda estamos aguardando a confirmação do pagamento. Se você pagou por Pix, normalmente isso se resolve em poucos minutos.");
+          return;
+        }
+      } catch (error) {
+        console.error("Erro ao consultar status do pagamento", error);
+        setPaymentCheckMessage("Não foi possível consultar o status agora. Vamos tentar novamente em alguns instantes.");
+      }
+
+      timeoutId = setTimeout(checkPaymentStatus, 5000);
+    };
+
+    checkPaymentStatus();
+
+    return () => {
+      stopped = true;
+      clearTimeout(timeoutId);
+    };
+  }, [isPaymentPendingRoute]);
+
+  useEffect(() => {
     if (window.location.pathname !== "/") return;
     if (!window.location.hash) return;
 
@@ -699,8 +759,9 @@ const syncLeadToSheet = async (payload) => {
       ? {
           emoji: "⏳",
           title: "Pagamento em processamento",
-          subtitle: "Estamos aguardando a confirmação do pagamento.",
+          subtitle: "Estamos verificando automaticamente a confirmação do pagamento.",
           message:
+            paymentCheckMessage ||
             "Se você pagou por Pix, a confirmação costuma acontecer em poucos instantes. Assim que o Mercado Pago confirmar, seu pedido seguirá para produção.",
           actionLabel: "Voltar para o início",
         }
@@ -733,6 +794,11 @@ const syncLeadToSheet = async (payload) => {
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7" style={{ color: BRAND.muted }}>
               {status.message}
             </p>
+            {isPaymentPendingRoute && paymentCheckAttempts > 0 && (
+              <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold" style={{ color: BRAND.muted }}>
+                Consulta automática ativa a cada 5 segundos.
+              </p>
+            )}
 
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <a

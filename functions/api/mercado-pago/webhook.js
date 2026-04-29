@@ -1,5 +1,41 @@
-async function sendToGoogleSheets(data) {
-  const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzXbDgNcrSpT64w3BgHUqY2Q-FElEhq8QJ44i9FqEHbKQ7hZWmYhvsUH7YjJluNVPZomQ/exec";
+const FALLBACK_GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzXbDgNcrSpT64w3BgHUqY2Q-FElEhq8QJ44i9FqEHbKQ7hZWmYhvsUH7YjJluNVPZomQ/exec";
+
+function getMetadataValue(metadata, keys, fallback = "") {
+  if (!metadata || typeof metadata !== "object") return fallback;
+
+  for (const key of keys) {
+    if (metadata[key] !== undefined && metadata[key] !== null && metadata[key] !== "") {
+      return metadata[key];
+    }
+  }
+
+  return fallback;
+}
+
+function stringifyValue(value) {
+  if (value === undefined || value === null) return "";
+  return String(value);
+}
+
+function normalizePaymentStage(status) {
+  if (status === "approved") return "payment_approved";
+  return `payment_${status}`;
+}
+
+function normalizePlanTitle(planTitle, planId) {
+  if (planTitle) return planTitle;
+
+  const titlesByPlanId = {
+    "musica-surpresa": "Música Surpresa",
+    "musica-surpresa-audio": "Música Surpresa - Áudio",
+    "musica-surpresa-video": "Música Surpresa - Vídeo",
+  };
+
+  return titlesByPlanId[planId] || "";
+}
+
+async function sendToGoogleSheets(data, env) {
+  const GOOGLE_SHEETS_WEBHOOK_URL = env.GOOGLE_SHEETS_WEBHOOK_URL || env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || FALLBACK_GOOGLE_SHEETS_WEBHOOK_URL;
 
   try {
     await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
@@ -13,7 +49,6 @@ async function sendToGoogleSheets(data) {
     console.error("Erro ao enviar para Google Sheets:", error);
   }
 }
-
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -67,22 +102,41 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
+    const metadata = payment.metadata || {};
+
+    const orderId = stringifyValue(
+      getMetadataValue(metadata, ["orderId", "order_id"], payment.external_reference || "")
+    );
+    const customerId = stringifyValue(getMetadataValue(metadata, ["customerId", "customer_id"]));
+    const planId = stringifyValue(getMetadataValue(metadata, ["planId", "plan_id"]));
+    const rawPlanTitle = stringifyValue(getMetadataValue(metadata, ["planTitle", "plan_title", "plan"]));
+    const planTitle = normalizePlanTitle(rawPlanTitle, planId);
+
     const result = {
-      orderId: payment.metadata?.orderId || payment.external_reference || "",
-      customerId: payment.metadata?.customerId || "",
-      paymentId: payment.id,
-      paymentStatus: payment.status,
-      paymentStatusDetail: payment.status_detail,
-      paymentMethod: payment.payment_type_id || payment.payment_method_id || "",
-      externalReference: payment.external_reference,
-      metadata: payment.metadata || {},
+      orderId,
+      customerId,
+      paymentId: stringifyValue(payment.id),
+      paymentStatus: stringifyValue(payment.status),
+      paymentStatusDetail: stringifyValue(payment.status_detail),
+      paymentMethod: stringifyValue(payment.payment_type_id || payment.payment_method_id || ""),
+      externalReference: stringifyValue(payment.external_reference || orderId),
+      metadata,
       transactionAmount: payment.transaction_amount,
-      payerEmail: payment.payer?.email,
+      payerEmail: stringifyValue(payment.payer?.email),
       eventType,
     };
 
-    if (["approved", "pending", "rejected", "cancelled", "refunded", "charged_back"].includes(payment.status)) {
-      console.log("Pagamento aprovado:", result);
+    const paymentStatusesToRegister = [
+      "approved",
+      "pending",
+      "rejected",
+      "cancelled",
+      "refunded",
+      "charged_back",
+    ];
+
+    if (paymentStatusesToRegister.includes(result.paymentStatus)) {
+      console.log("Pagamento recebido para registro:", result);
 
       const approvedDate = payment.date_approved || payment.date_created || new Date().toISOString();
       const dateSaoPaulo = new Date(approvedDate).toLocaleString("pt-BR", {
@@ -95,35 +149,40 @@ export async function onRequestPost({ request, env }) {
         second: "2-digit",
       });
 
-      await sendToGoogleSheets({
-        orderId: result.orderId,
-        customerId: result.customerId,
-        stage: result.paymentStatus === "approved" ? "payment_approved" : `payment_${result.paymentStatus}`,
-        paymentId: result.paymentId,
-        paymentStatus: result.paymentStatus,
-        paymentStatusDetail: result.paymentStatusDetail || "",
-        paymentMethod: result.paymentMethod || "",
-        planId: result.metadata?.planId || "",
-        planTitle: result.metadata?.planTitle || "",
-        customerName: result.metadata?.customerName || "",
-        email: result.metadata?.email || result.payerEmail || "",
-        whatsapp: result.metadata?.whatsapp || "",
-        recipient: result.metadata?.recipient || "",
-        relationship: result.metadata?.relationship || "",
-        occasion: result.metadata?.occasion || "",
-        description: result.metadata?.description || "",
-        message: result.metadata?.message || "",
-        moments: result.metadata?.moments || "",
-        specialPhrase: result.metadata?.specialPhrase || "",
-        style: result.metadata?.style || "",
-        voiceType: result.metadata?.voiceType || "",
-        observations: result.metadata?.observations || "",
-        amount: result.transactionAmount,
-        externalReference: result.externalReference,
-        date: dateSaoPaulo,
-      });
+      await sendToGoogleSheets(
+        {
+          orderId: result.orderId,
+          customerId: result.customerId,
+          stage: normalizePaymentStage(result.paymentStatus),
+          paymentId: result.paymentId,
+          paymentStatus: result.paymentStatus,
+          paymentStatusDetail: result.paymentStatusDetail || "",
+          paymentMethod: result.paymentMethod || "",
+          planId,
+          planTitle,
+          customerName: stringifyValue(getMetadataValue(metadata, ["customerName", "customer_name", "name"])),
+          email: stringifyValue(getMetadataValue(metadata, ["email", "customerEmail", "customer_email"], result.payerEmail)),
+          whatsapp: stringifyValue(getMetadataValue(metadata, ["whatsapp", "phone", "customerPhone", "customer_phone"])),
+          recipient: stringifyValue(getMetadataValue(metadata, ["recipient"])),
+          relationship: stringifyValue(getMetadataValue(metadata, ["relationship"])),
+          occasion: stringifyValue(getMetadataValue(metadata, ["occasion"])),
+          description: stringifyValue(getMetadataValue(metadata, ["description"])),
+          message: stringifyValue(getMetadataValue(metadata, ["message"])),
+          moments: stringifyValue(getMetadataValue(metadata, ["moments"])),
+          specialPhrase: stringifyValue(getMetadataValue(metadata, ["specialPhrase", "special_phrase"])),
+          style: stringifyValue(getMetadataValue(metadata, ["style"])),
+          voiceType: stringifyValue(getMetadataValue(metadata, ["voiceType", "voice_type"])),
+          observations: stringifyValue(getMetadataValue(metadata, ["observations"])),
+          amount: result.transactionAmount || "",
+          externalReference: result.externalReference,
+          eventType,
+          eventKey: `${result.orderId}:${result.paymentId}:${result.paymentStatus}`,
+          date: dateSaoPaulo,
+        },
+        env
+      );
     } else {
-      console.log("Pagamento recebido com status não aprovado:", result);
+      console.log("Pagamento recebido com status não registrado:", result);
     }
 
     return Response.json(
