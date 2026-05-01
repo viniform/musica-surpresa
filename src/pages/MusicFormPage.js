@@ -1,5 +1,24 @@
 import React, { useEffect, useState } from "react";
-import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.png";
+import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
+
+const FIELD_LIMITS = {
+  name: 80,
+  email: 120,
+  whatsapp: 11,
+  recipient: 80,
+  relationship: 50,
+  occasion: 50,
+  description: 1200,
+  message: 800,
+  moments: 1200,
+  specialPhrase: 250,
+  style: 60,
+  voiceType: 40,
+  observations: 800,
+};
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const whatsappRegex = /^\d{10,11}$/;
 
 export default function MusicFormPage() {
   let lead = {};
@@ -8,7 +27,7 @@ export default function MusicFormPage() {
     const storedLead = sessionStorage.getItem("musicOrderLead");
     if (storedLead) lead = JSON.parse(storedLead);
   } catch (error) {
-    console.error("Erro ao ler dados do mini formulário", error);
+    console.error("Erro ao ler dados do mini formulário");
   }
 
   const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 125,00";
@@ -18,11 +37,7 @@ export default function MusicFormPage() {
   const syncToSheet = async (payload, options = {}) => {
     const body = JSON.stringify(payload);
 
-    console.log("[Google Sheets] Payload formulário:", payload);
-    console.log("[Google Sheets] Payload formulário JSON:", body);
-
     if (!GOOGLE_SHEETS_WEBHOOK_URL) {
-      console.warn("[Google Sheets] Webhook não configurado no MusicFormPage.");
       return;
     }
 
@@ -32,7 +47,6 @@ export default function MusicFormPage() {
         const sent = navigator.sendBeacon(GOOGLE_SHEETS_WEBHOOK_URL, blob);
 
         if (sent) {
-          console.log("[Google Sheets] Envio por sendBeacon disparado no formulário.");
           return;
         }
       }
@@ -47,9 +61,8 @@ export default function MusicFormPage() {
         body,
       });
 
-      console.log("[Google Sheets] Envio por fetch disparado no formulário.");
     } catch (error) {
-      console.error("Erro ao sincronizar formulário", error);
+      console.error("Erro ao sincronizar formulário");
     }
   };
 
@@ -72,6 +85,7 @@ export default function MusicFormPage() {
   });
 
   const [errors, setErrors] = useState({});
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
     const storedLead = sessionStorage.getItem("musicOrderLead");
@@ -113,26 +127,28 @@ export default function MusicFormPage() {
       };
 
       sessionStorage.setItem("musicOrderDraft", JSON.stringify({
-        ...leadData,
-        name: startedPayload.customerName,
+        orderId: startedPayload.orderId,
+        customerId: startedPayload.customerId,
         plan: startedPayload.planTitle,
+        planId: startedPayload.planId,
       }));
 
       syncToSheet(startedPayload);
     } catch (error) {
-      console.error("Erro ao sincronizar início do formulário", error);
+      console.error("Erro ao sincronizar início do formulário");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (field, value) => {
-    const updated = { ...form, [field]: value };
-    setForm(updated);
+    const limit = FIELD_LIMITS[field];
+    const normalizedValue = field === "whatsapp"
+      ? value.replace(/\D/g, "").slice(0, FIELD_LIMITS.whatsapp)
+      : limit
+        ? value.slice(0, limit)
+        : value;
 
-    sessionStorage.setItem("musicOrderDraft", JSON.stringify({
-      ...updated,
-      plan: selectedPlan
-    }));
+    setForm((current) => ({ ...current, [field]: normalizedValue }));
   };
 
   const validate = () => {
@@ -148,6 +164,16 @@ export default function MusicFormPage() {
     if (!form.message) newErrors.message = "Informe a mensagem principal da música";
     if (!form.moments) newErrors.moments = "Conte ao menos um momento marcante";
     if (!form.style) newErrors.style = "Informe o estilo ou ritmo desejado";
+    if (!acceptedTerms) newErrors.acceptedTerms = "Você precisa aceitar os Termos de Serviço para continuar";
+
+    if (form.email && !emailRegex.test(form.email.trim())) {
+      newErrors.email = "Informe um e-mail válido";
+    }
+
+    const whatsappDigits = form.whatsapp.replace(/\D/g, "");
+    if (form.whatsapp && !whatsappRegex.test(whatsappDigits)) {
+      newErrors.whatsapp = "Informe um WhatsApp válido com DDD";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -183,13 +209,24 @@ export default function MusicFormPage() {
       externalReference: form.orderId,
     };
 
-    sessionStorage.setItem("musicOrderDraft", JSON.stringify({ ...form, plan: selectedPlan }));
-
-    console.log("[MusicFormPage] Enviando formulario_completo para Google Sheets", payload);
 
     await syncToSheet(payload, { preferBeacon: false });
 
-    console.log("[MusicFormPage] Redirecionando para /upsell após formulario_completo");
+    sessionStorage.removeItem("musicOrderLead");
+
+    sessionStorage.setItem(
+      "musicOrderDraft",
+      JSON.stringify({
+        orderId: payload.orderId,
+        customerId: payload.customerId,
+        plan: payload.planTitle,
+        planId: payload.planId,
+        recipient: payload.recipient,
+        occasion: payload.occasion,
+        style: payload.style,
+      })
+    );
+
 
     window.location.href = "/upsell";
   };
@@ -237,6 +274,7 @@ export default function MusicFormPage() {
       value={form.name}
       onChange={(e) => handleChange("name", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.name}
     />
     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
   </div>
@@ -248,6 +286,9 @@ export default function MusicFormPage() {
       placeholder="Ex: 11999999999"
       value={form.whatsapp}
       onChange={(e) => handleChange("whatsapp", e.target.value)}
+      maxLength={FIELD_LIMITS.whatsapp}
+      inputMode="numeric"
+      pattern="[0-9]*"
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
     />
     {errors.whatsapp && <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>}
@@ -261,6 +302,7 @@ export default function MusicFormPage() {
       value={form.email}
       onChange={(e) => handleChange("email", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.email}
     />
     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
   </div>
@@ -273,6 +315,7 @@ export default function MusicFormPage() {
       value={form.recipient}
       onChange={(e) => handleChange("recipient", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.recipient}
     />
     {errors.recipient && <p className="text-red-500 text-xs mt-1">{errors.recipient}</p>}
   </div>
@@ -285,6 +328,7 @@ export default function MusicFormPage() {
       value={form.relationship}
       onChange={(e) => handleChange("relationship", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.relationship}
     />
     {errors.relationship && <p className="text-red-500 text-xs mt-1">{errors.relationship}</p>}
   </div>
@@ -297,6 +341,7 @@ export default function MusicFormPage() {
       value={form.occasion}
       onChange={(e) => handleChange("occasion", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.occasion}
     />
     {errors.occasion && <p className="text-red-500 text-xs mt-1">{errors.occasion}</p>}
   </div>
@@ -308,6 +353,7 @@ export default function MusicFormPage() {
       value={form.description}
       onChange={(e) => handleChange("description", e.target.value)}
       className="w-full min-h-[120px] rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.description}
     />
     {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
   </div>
@@ -319,6 +365,7 @@ export default function MusicFormPage() {
       value={form.message}
       onChange={(e) => handleChange("message", e.target.value)}
       className="w-full min-h-[120px] rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.message}
     />
     {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
   </div>
@@ -330,6 +377,7 @@ export default function MusicFormPage() {
       value={form.moments}
       onChange={(e) => handleChange("moments", e.target.value)}
       className="w-full min-h-[120px] rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.moments}
     />
     {errors.moments && <p className="text-red-500 text-xs mt-1">{errors.moments}</p>}
   </div>
@@ -342,6 +390,7 @@ export default function MusicFormPage() {
       value={form.specialPhrase}
       onChange={(e) => handleChange("specialPhrase", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.specialPhrase}
     />
   </div>
 
@@ -353,6 +402,7 @@ export default function MusicFormPage() {
       value={form.style}
       onChange={(e) => handleChange("style", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.style}
     />
     {errors.style && <p className="text-red-500 text-xs mt-1">{errors.style}</p>}
   </div>
@@ -365,6 +415,7 @@ export default function MusicFormPage() {
       value={form.voiceType}
       onChange={(e) => handleChange("voiceType", e.target.value)}
       className="w-full rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.voiceType}
     />
   </div>
 
@@ -375,16 +426,44 @@ export default function MusicFormPage() {
       value={form.observations}
       onChange={(e) => handleChange("observations", e.target.value)}
       className="w-full min-h-[120px] rounded-xl border border-[#E8DDD2] px-4 py-3 text-sm"
+      maxLength={FIELD_LIMITS.observations}
     />
+  </div>
+
+  <div className="mt-4 rounded-2xl border border-[#E8DDD2] bg-[#FFF8F3] p-4">
+    <label className="flex items-center justify-center gap-3 text-sm leading-6 text-[#5B6474] text-center">
+      <input
+        type="checkbox"
+        checked={acceptedTerms}
+        onChange={(e) => setAcceptedTerms(e.target.checked)}
+        className="h-4 w-4 rounded border-[#B45D5D] text-[#B45D5D]"
+      />
+      <span>
+        Li e concordo com os{" "}
+        <a
+          href="/termos"
+          target="_blank"
+          rel="noreferrer"
+          className="font-bold text-[#B45D5D] underline underline-offset-2"
+        >
+          Termos de Serviço
+        </a>{" "}
+        da Música Surpresa.
+      </span>
+    </label>
+    {!acceptedTerms && errors.acceptedTerms && (
+      <p className="mt-3 text-center text-xs text-red-500">{errors.acceptedTerms}</p>
+    )}
   </div>
 
   <button
     type="button"
     onClick={() => {
-      console.log("[MusicFormPage] Botão Criar minha música clicado.");
       handleSubmit();
     }}
-    className="mt-4 rounded-xl bg-[#B45D5D] px-6 py-4 text-sm font-bold text-white"
+    className={`mt-4 rounded-xl px-6 py-4 text-sm font-bold text-white transition ${
+      acceptedTerms ? "bg-[#B45D5D] hover:bg-[#9F4F4F]" : "cursor-not-allowed bg-[#B45D5D]/50"
+    }`}
   >
     Criar minha música
   </button>

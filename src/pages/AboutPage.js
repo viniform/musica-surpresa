@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.png";
-import imagemHistoria from "../assets/Quem_Somos_02.png";
+import React, { useState, useEffect } from "react";
+import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
+import imagemHistoria from "../assets/Quem_Somos_02.webp";
 
 const BRAND = {
   cream: "#FFF8F3",
@@ -11,6 +11,16 @@ const BRAND = {
 
 export default function AboutPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.title = "Quem Somos — Música Surpresa";
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute("content", "Somos músicos profissionais com mais de 20 anos de experiência, criando músicas personalizadas exclusivas para momentos inesquecíveis.");
+    return () => {
+      document.title = "Música Surpresa";
+      if (desc) desc.setAttribute("content", "Crie uma música personalizada exclusiva como presente inesquecível para mães, pais, namorados e momentos especiais. Entrega em até 48h.");
+    };
+  }, []);
 
   const goToHomeSection = (sectionId) => {
     setMobileMenuOpen(false);
@@ -143,6 +153,7 @@ export default function AboutPage() {
 
             <div className="lg:col-span-1">
               <img
+                loading="lazy"
                 src={imagemHistoria}
                 alt="História através da música"
                 className="w-full rounded-3xl object-cover shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"

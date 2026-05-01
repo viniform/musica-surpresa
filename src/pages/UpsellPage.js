@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
-import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.png";
+import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
 
 const defaultPlans = [
   {
     id: "musica-surpresa",
-    name: "Música Surpresa - Áudio",
+    name: "Música Surpresa",
     price: 125,
     badge: "Escolha Inicial",
     description: "A escolha essencial: música completa personalizada, pronta para emocionar.",
@@ -65,7 +65,7 @@ function readStoredOrder() {
       ...(draft ? JSON.parse(draft) : {}),
     };
   } catch (error) {
-    console.error("Erro ao ler dados do pedido", error);
+    console.error("Erro ao ler dados do pedido");
     return {};
   }
 }
@@ -75,10 +75,7 @@ const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_UR
 async function syncToSheet(payload, options = {}) {
   const body = JSON.stringify(payload);
 
-  console.log("[Google Sheets] Payload upsell:", payload);
-
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
-    console.warn("[Google Sheets] Webhook não configurado no UpsellPage.");
     return;
   }
 
@@ -86,9 +83,7 @@ async function syncToSheet(payload, options = {}) {
     if (options.preferBeacon !== false && navigator.sendBeacon) {
       const blob = new Blob([body], { type: "text/plain;charset=utf-8" });
       const sent = navigator.sendBeacon(GOOGLE_SHEETS_WEBHOOK_URL, blob);
-
       if (sent) {
-        console.log("[Google Sheets] Envio por sendBeacon disparado no upsell.");
         return;
       }
     }
@@ -102,10 +97,8 @@ async function syncToSheet(payload, options = {}) {
       },
       body,
     });
-
-    console.log("[Google Sheets] Envio por fetch disparado no upsell.");
   } catch (error) {
-    console.error("Erro ao sincronizar upsell", error);
+    console.error("Erro ao sincronizar upsell");
   }
 }
 
@@ -180,54 +173,55 @@ export default function UpsellPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 const handleContinue = async () => {
-  console.log("[UpsellPage] Botão SEGUIR PARA PAGAMENTO clicado.");
-    if (effectiveCustomer.orderId) {
-      const checkoutPayload = {
-        orderId: effectiveCustomer.orderId,
-        customerId: effectiveCustomer.customerId,
-        stage: "checkout_iniciado",
-        planId: selectedPlan.id,
-        planTitle: selectedPlan.name,
-        amount: selectedPlan.price,
-        customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
-        email: effectiveCustomer.email || "",
-        whatsapp: effectiveCustomer.whatsapp || "",
-        recipient: effectiveCustomer.recipient || "",
-        relationship: effectiveCustomer.relationship || "",
-        occasion: effectiveCustomer.occasion || "",
-        description: effectiveCustomer.description || "",
-        message: effectiveCustomer.message || "",
-        moments: effectiveCustomer.moments || "",
-        specialPhrase: effectiveCustomer.specialPhrase || "",
-        style: effectiveCustomer.style || "",
-        voiceType: effectiveCustomer.voiceType || "",
-        observations: effectiveCustomer.observations || "",
-        externalReference: effectiveCustomer.orderId,
-      };
+  if (effectiveCustomer.orderId) {
+    const checkoutPayload = {
+      orderId: effectiveCustomer.orderId,
+      customerId: effectiveCustomer.customerId,
+      stage: "checkout_iniciado",
+      planId: selectedPlan.id,
+      planTitle: selectedPlan.name,
+      amount: selectedPlan.price,
+      customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
+      email: effectiveCustomer.email || "",
+      whatsapp: effectiveCustomer.whatsapp || "",
+      recipient: effectiveCustomer.recipient || "",
+      relationship: effectiveCustomer.relationship || "",
+      occasion: effectiveCustomer.occasion || "",
+      description: effectiveCustomer.description || "",
+      message: effectiveCustomer.message || "",
+      moments: effectiveCustomer.moments || "",
+      specialPhrase: effectiveCustomer.specialPhrase || "",
+      style: effectiveCustomer.style || "",
+      voiceType: effectiveCustomer.voiceType || "",
+      observations: effectiveCustomer.observations || "",
+      externalReference: effectiveCustomer.orderId,
+    };
 
-      sessionStorage.setItem("musicOrderDraft", JSON.stringify({
-        ...effectiveCustomer,
-        plan: selectedPlan.name,
-        planId: selectedPlan.id,
-        planTitle: selectedPlan.name,
-        amount: selectedPlan.price,
-      }));
+    sessionStorage.setItem("musicOrderDraft", JSON.stringify({
+      orderId: effectiveCustomer.orderId || "",
+      customerId: effectiveCustomer.customerId || "",
+      plan: selectedPlan.name,
+      planId: selectedPlan.id,
+      planTitle: selectedPlan.name,
+      amount: selectedPlan.price,
+      recipient: effectiveCustomer.recipient || "",
+      occasion: effectiveCustomer.occasion || "",
+      style: effectiveCustomer.style || "",
+    }));
+    await syncToSheet(checkoutPayload, { preferBeacon: false });
+  }
 
-console.log("[UpsellPage] Enviando checkout_iniciado para Google Sheets", checkoutPayload);
-await syncToSheet(checkoutPayload, { preferBeacon: false });
-    }
+  if (typeof onContinueToPayment === "function") {
+    onContinueToPayment(selectedPlan);
+    return;
+  }
 
-    if (typeof onContinueToPayment === "function") {
-      onContinueToPayment(selectedPlan);
-      return;
-    }
-
-    alert(
-      `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(
-        selectedPlan.price
-      )}`
-    );
-  };
+  alert(
+    `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(
+      selectedPlan.price
+    )}`
+  );
+};
 
   const faqs = [
     {
