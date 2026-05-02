@@ -30,7 +30,7 @@ export default function MusicFormPage() {
     console.error("Erro ao ler dados do mini formulário");
   }
 
-  const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 125,00";
+  const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 99,00";
 
   const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
 

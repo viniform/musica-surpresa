@@ -5,7 +5,7 @@ const defaultPlans = [
   {
     id: "musica-surpresa",
     name: "Música Surpresa",
-    price: 125,
+    price: 99,
     badge: "Escolha Inicial",
     description: "A escolha essencial: música completa personalizada, pronta para emocionar.",
     features: [
@@ -19,7 +19,7 @@ const defaultPlans = [
   {
     id: "video-letra",
     name: "Música + Video com a Letra",
-    price: 180,
+    price: 149,
     badge: "Melhor custo-benefício",
     description:
       "Além da música, você recebe um vídeo com a letra, pronto para emocionar e compartilhar.",
@@ -35,7 +35,7 @@ const defaultPlans = [
   {
     id: "retrospectiva",
     name: "Música + Retrospectiva",
-    price: 260,
+    price: 199,
     badge: "Experiência premium",
     description:
       "A experiência mais completa: música com letra em retrospectiva com fotos personalizadas.",
@@ -230,7 +230,7 @@ const handleContinue = async () => {
     },
     {
       question: "Posso optar só pela música?",
-      answer: "Sim. A opção Música Surpresa continua disponível por R$ 125,00.",
+      answer: "Sim. A opção Música Surpresa continua disponível por R$ 99,00.",
     },
     {
       question: "Quando recebo?",

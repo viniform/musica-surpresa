@@ -24,7 +24,7 @@ export default function HomePage() {
     name: "",
     whatsapp: "",
     email: "",
-    plan: "Música Surpresa — R$ 125,00",
+    plan: "Música Surpresa — R$ 99,00",
   });
 
   const initialPlanId = useMemo(() => "musica-surpresa", []);
@@ -204,7 +204,7 @@ export default function HomePage() {
   const plans = [{
     name: "Música Surpresa",
     subtitle: "Música exclusiva com letra, melodia e arranjo personalizados, criada a partir da sua história e entregue em até 48 horas.",
-    price: "R$ 125,00",
+    price: "R$ 99,00",
     color: BRAND.terracotta,
     bg: BRAND.cream,
     border: BRAND.terracottaSoft,
