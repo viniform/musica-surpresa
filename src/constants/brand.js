@@ -9,4 +9,4 @@ export const BRAND = {
   muted: "#5B6474",
 };
 
-export const WHATSAPP_NUMBER = "5511940787078";
+export const WHATSAPP_NUMBER = process.env.REACT_APP_WHATSAPP_NUMBER || "";

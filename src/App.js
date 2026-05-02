@@ -29,7 +29,8 @@ export default function App() {
     if (!isPaymentPendingRoute) return;
 
     const params = new URLSearchParams(window.location.search);
-    const paymentId = params.get("payment_id") || params.get("collection_id");
+    const rawPaymentId = params.get("payment_id") || params.get("collection_id");
+    const paymentId = /^\d{1,20}$/.test(rawPaymentId || "") ? rawPaymentId : null;
 
     if (!paymentId) {
       setPaymentCheckMessage(
@@ -105,18 +106,12 @@ export default function App() {
     return {
       orderId: draft?.orderId || "",
       customerId: draft?.customerId || "",
-      customerName: draft?.name || params.get("cliente_nome") || params.get("comprador_nome") || "",
-      recipient:
-        draft?.recipient ||
-        params.get("presente_para") ||
-        params.get("homenageado") ||
-        params.get("destinatario") ||
-        params.get("nome") ||
-        "Pessoa especial",
-      email: draft?.email || params.get("email") || "",
-      whatsapp: draft?.whatsapp || params.get("whatsapp") || "",
-      occasion: draft?.occasion || params.get("ocasiao") || params.get("ocasião") || "Ocasião especial",
-      style: draft?.style || params.get("estilo") || params.get("estilo_desejado") || "Personalizado",
+      customerName: draft?.name || "",
+      recipient: draft?.recipient || "Pessoa especial",
+      email: draft?.email || "",
+      whatsapp: draft?.whatsapp || "",
+      occasion: draft?.occasion || "Ocasião especial",
+      style: draft?.style || "Personalizado",
       relationship: draft?.relationship || "",
       description: draft?.description || "",
       message: draft?.message || "",

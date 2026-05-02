@@ -279,7 +279,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <a href="#formulario" style={{ backgroundColor: BRAND.terracotta, boxShadow: "0 14px 34px rgba(201,79,54,0.22)" }} className="order-2 inline-flex min-h-[68px] items-center justify-center rounded-[18px] px-8 text-[18px] font-black text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-xl lg:order-none lg:min-w-[400px] lg:px-10 lg:text-[20px]">
-                {activeHeroSlide.cta}
+                <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
               </a>
               <div className="order-1 grid gap-4 lg:order-none lg:flex lg:items-center lg:gap-6">
                 {[
@@ -304,10 +304,10 @@ export default function HomePage() {
       </section>
 
       {/* Planos */}
-      <section id="planos" className="scroll-mt-24 pt-3 pb-8 lg:scroll-mt-24" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="planos" aria-labelledby="titulo-como-funciona" className="scroll-mt-24 pt-3 pb-8 lg:scroll-mt-24" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-3 lg:px-10">
           <div className="text-center">
-            <h2 className="mt-1 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
+            <h2 id="titulo-como-funciona" className="mt-1 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
               ✨ Como criamos a sua música surpresa ✨
             </h2>
           </div>
@@ -337,7 +337,7 @@ export default function HomePage() {
                 <div className="flex flex-col items-center gap-3 pr-0 text-center lg:w-[220px] lg:flex-shrink-0 lg:items-end lg:pr-6 lg:text-right">
                   <div className="mt-4 text-4xl font-black tracking-[0.03em] text-center whitespace-nowrap lg:text-right" style={{ color: plan.color }}>{plan.price}</div>
                   <a href="#formulario" onClick={(e) => { e.preventDefault(); const selectedPlan = `${plan.name} — ${plan.price}`; sessionStorage.setItem("selectedPlan", selectedPlan); setFormData((prev) => ({ ...prev, plan: selectedPlan })); setTimeout(() => scrollTo("formulario"), 0); }} className="mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:ml-auto lg:mt-0 lg:w-auto" style={{ backgroundColor: plan.color }}>
-                    {plan.cta}
+                    <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
                   </a>
                 </div>
               </div>
@@ -369,10 +369,10 @@ export default function HomePage() {
       </section>
 
       {/* Player de demos */}
-      <section id="musicas" className="scroll-mt-24 pb-8 pt-8 lg:scroll-mt-10 lg:py-20" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="musicas" aria-labelledby="titulo-musicas" className="scroll-mt-24 pb-8 pt-8 lg:scroll-mt-10 lg:py-20" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-9">
           <div className="text-center">
-            <h2 className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-3 lg:text-4xl" style={{ color: BRAND.navy }}>✨Músicas criadas para emocionar✨</h2>
+            <h2 id="titulo-musicas" className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-3 lg:text-4xl" style={{ color: BRAND.navy }}>✨Músicas criadas para emocionar✨</h2>
             <p className="mx-auto mt-3 max-w-4xl text-[15px] leading-7 text-[#4B5563] lg:mt-4 lg:text-base">
               Ouça músicas criadas por nós e comprove a qualidade, emoção e cuidado com cada pedido
             </p>
@@ -387,6 +387,8 @@ export default function HomePage() {
                 const isActive = song.songIndex === currentSongIndex;
                 return (
                   <button key={`${song.title}-${song.songIndex}`} type="button" onClick={() => handleSelectSong(song.songIndex)}
+                    aria-label={`${isActive && isPlaying ? "Pausar" : "Ouvir"} a música ${song.title} — ${song.occasion}`}
+                    aria-pressed={isActive}
                     className={`flex min-h-[166px] flex-col justify-between rounded-[20px] border p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-md lg:min-h-[178px] lg:rounded-[22px] lg:p-5 ${isActive ? "shadow-lg lg:scale-[1.03]" : "shadow-sm"}`}
                     style={{ backgroundColor: isActive ? "#FFF1EA" : "#FFFFFF", borderColor: isActive ? BRAND.terracotta : BRAND.terracottaSoft, transformOrigin: "center" }}>
                     <div>
@@ -411,11 +413,11 @@ export default function HomePage() {
       </section>
 
       {/* Depoimentos */}
-      <section id="depoimentos" className="scroll-mt-24 py-12 lg:scroll-mt-14 lg:py-20" style={{ backgroundColor: BRAND.terracotta }}>
+      <section id="depoimentos" aria-labelledby="titulo-depoimentos" className="scroll-mt-24 py-12 lg:scroll-mt-14 lg:py-20" style={{ backgroundColor: BRAND.terracotta }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
             <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracottaSoft }}>Depoimentos</p>
-            <h2 className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] text-white sm:text-3xl lg:mt-3 lg:text-4xl">
+            <h2 id="titulo-depoimentos" className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] text-white sm:text-3xl lg:mt-3 lg:text-4xl">
               Histórias reais, <span style={{ color: BRAND.terracottaSoft }}>emoções verdadeiras</span>
             </h2>
           </div>
@@ -436,14 +438,14 @@ export default function HomePage() {
       </section>
 
       {/* Formulário */}
-      <section id="formulario" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="formulario" aria-labelledby="titulo-formulario" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto grid max-w-7xl items-start gap-10 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
           <div className="w-full overflow-hidden rounded-[12px] shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
             <img loading="lazy" src={slide11} alt="Pessoas em um momento especial" className="h-[500px] w-full object-cover object-left lg:h-[520px] lg:object-[center_35%]" />
           </div>
           <div className="flex flex-col">
             <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>Comece agora</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl" style={{ color: BRAND.navy }}>Conte sua história e criamos sua música</h2>
+            <h2 id="titulo-formulario" className="mt-3 text-3xl font-black sm:text-4xl" style={{ color: BRAND.navy }}>Conte sua história e criamos sua música</h2>
             <p className="mt-4 text-base leading-7" style={{ color: BRAND.muted }}>Preencha os dados iniciais abaixo para começarmos sua música.</p>
             <div className="mt-5 hidden flex-wrap gap-3 text-sm font-semibold lg:flex" style={{ color: BRAND.terracottaDark }}>
               <span className="rounded-full px-4 py-2" style={{ backgroundColor: BRAND.terracottaSoft }}>Resposta Rápida</span>
@@ -451,14 +453,17 @@ export default function HomePage() {
               <span className="rounded-full px-4 py-2" style={{ backgroundColor: BRAND.terracottaSoft }}>100% Personalizado</span>
             </div>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <input name="name" value={formData.name} onChange={handleFormChange} className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none" placeholder="Seu nome" />
-              <input name="whatsapp" value={formatWhatsapp(formData.whatsapp)} onChange={handleFormChange} inputMode="tel" className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none" placeholder="WhatsApp com DDD" />
-              <input type="email" name="email" value={formData.email} onChange={handleFormChange} inputMode="email" className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2" placeholder="E-mail" />
-              <div className="rounded-xl border border-[#E8DDD2] bg-[#F8F5F1] px-4 py-3 text-sm font-semibold text-[#0B2454] sm:col-span-2">{formData.plan}</div>
+              <label htmlFor="field-name" className="sr-only">Seu nome</label>
+              <input id="field-name" name="name" value={formData.name} onChange={handleFormChange} className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none" placeholder="Seu nome" autoComplete="name" />
+              <label htmlFor="field-whatsapp" className="sr-only">WhatsApp com DDD</label>
+              <input id="field-whatsapp" name="whatsapp" value={formatWhatsapp(formData.whatsapp)} onChange={handleFormChange} inputMode="tel" className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none" placeholder="WhatsApp com DDD" autoComplete="tel" />
+              <label htmlFor="field-email" className="sr-only">E-mail</label>
+              <input id="field-email" type="email" name="email" value={formData.email} onChange={handleFormChange} inputMode="email" className="rounded-xl border border-[#E8DDD2] bg-white px-4 py-3 text-sm outline-none sm:col-span-2" placeholder="E-mail" autoComplete="email" />
+              <div className="rounded-xl border border-[#E8DDD2] bg-[#F8F5F1] px-4 py-3 text-sm font-semibold text-[#0B2454] sm:col-span-2" aria-label={`Plano selecionado: ${formData.plan}`} role="status">{formData.plan}</div>
               <input type="hidden" name="plan" value={formData.plan} />
             </div>
             <button type="button" onClick={handleContinueToMusicForm} style={{ backgroundColor: BRAND.terracotta, boxShadow: "0 10px 22px rgba(169,98,96,0.18)" }} className="mt-6 w-full rounded-xl px-5 py-4 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-[0_14px_28px_rgba(169,98,96,0.24)]">
-              💝 CRIAR MINHA MÚSICA
+              <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
             </button>
             <p className="mt-4 text-center text-sm text-[#6B7280]">Ao continuar, você iniciará a criação da sua música 😉</p>
           </div>
@@ -466,22 +471,22 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-24 pb-16 pt-2 lg:scroll-mt-16 lg:pt-10" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="faq" aria-labelledby="titulo-faq" className="scroll-mt-24 pb-16 pt-2 lg:scroll-mt-16 lg:pt-10" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>Dúvidas frequentes</p>
+            <p id="titulo-faq" className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>Dúvidas frequentes</p>
           </div>
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {faqs.map((faq, index) => {
               const isOpen = openFaq === index;
               return (
                 <div key={faq.q} className="overflow-hidden rounded-2xl border border-[#ECE2D8] bg-white shadow-sm transition-all duration-300">
-                  <button type="button" onClick={() => setOpenFaq(isOpen ? -1 : index)} className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left">
+                  <button type="button" onClick={() => setOpenFaq(isOpen ? -1 : index)} aria-expanded={isOpen} aria-controls={`faq-answer-${index}`} className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left">
                     <h3 className="text-lg font-bold" style={{ color: BRAND.navy }}>{faq.q}</h3>
-                    <span className="text-xl font-bold" style={{ color: BRAND.terracotta }}>{isOpen ? "−" : "+"}</span>
+                    <span className="text-xl font-bold" aria-hidden="true" style={{ color: BRAND.terracotta }}>{isOpen ? "−" : "+"}</span>
                   </button>
                   {isOpen && (
-                    <div className="border-t border-[#F1E7DD] px-5 pb-5 pt-4">
+                    <div id={`faq-answer-${index}`} role="region" aria-label={faq.q} className="border-t border-[#F1E7DD] px-5 pb-5 pt-4">
                       <p className="text-sm leading-7" style={{ color: BRAND.muted }}>{faq.a}</p>
                     </div>
                   )}
