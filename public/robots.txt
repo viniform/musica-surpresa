@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
 
+# Páginas internas — sem valor de SEO
+Disallow: /upsell
+Disallow: /pagamento/
+
+# Arquivos técnicos
+Disallow: /static/
+Disallow: /manifest.json
+
 Sitemap: https://musicasurpresa.com.br/sitemap.xml
