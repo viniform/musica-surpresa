@@ -123,7 +123,7 @@ export default function HomePage() {
   const heroSlides = useMemo(() => [
     {
       title: (<>Transformamos <span style={{ color: BRAND.terracotta }}>histórias</span><br />em músicas que emocionam para sempre</>),
-      description: "Música exclusiva, 100% personalizada com letra, estilo e melodia para transformar histórias reais em presentes inesquecíveis ✨",
+      description: "Você nos conta sobre a pessoa e o que quer expressar. A gente transforma isso em uma música inédita, com letra e melodia criadas especialmente para ela ✨",
       pills: ["Curadoria\nMusical", "Entrega em\naté 48h", "Experiências\nemocionantes"],
       image: imagemHero16,
       imageAlt: "Casal ouvindo música juntos",
@@ -131,7 +131,7 @@ export default function HomePage() {
     },
     {
       title: (<>Homenageie <span style={{ color: BRAND.terracotta }}>pessoas especiais</span> com uma música feita só para elas</>),
-      description: "Crie uma homenagem emocionante para mães, pais, avós, filhos, amigos e pessoas que mereçam uma lembrança eternizada ✨",
+      description: "Uma música inédita feita para uma pessoa específica — como se um cantor tivesse composto só para ela ✨",
       pills: ["Homenagens\nÚnicas", "Letra\nPersonalizada", "Entrega\nRápida"],
       image: slide2,
       imageAlt: "Mãe ouvindo música personalizada que a filha deu de presente",
@@ -139,7 +139,7 @@ export default function HomePage() {
     },
     {
       title: (<>Crie músicas para <span style={{ color: BRAND.terracotta }}>ocasiões especiais</span> que merecem<br />ser inesquecíveis</>),
-      description: "Dia das Mães, Dia dos Pais, Dia dos Namorados, aniversários e outras datas ganham um presente único e emocional ✨",
+      description: "Para cada data que merece ser inesquecível: uma música com a história dela, os momentos de vocês e tudo que você quer dizer — transformado em canção ✨",
       pills: ["Diferente", "Surpreendente", "Emocionante"],
       image: slide1,
       imageAlt: "Família ouvindo música personalizada para uma ocasião especial",
@@ -217,16 +217,16 @@ export default function HomePage() {
   }];
 
   const steps = [
-    { title: "Você conta tudo pra gente ...", text: "Preencha o formulário dizendo tudo o que você quer expressar com esta música", icon: "✍️", color: BRAND.terracotta },
+    { title: "Você conta tudo sobre ela ...", text: "Preencha o formulário contando quem é a pessoa, sua relação com ela, a ocasião e o que quer expressar com a música", icon: "✍️", color: BRAND.terracotta },
     { title: "A gente prepara a sua música ...", text: "Nossa equipe cria letra e melodia personalizadas para a sua música", icon: "🎧", color: BRAND.terracotta },
     { title: "Produzimos, revisamos ... ", text: "Produzimos, analisamos e revisamos sua música com toda a nossa experiência", icon: "🔍", color: BRAND.terracotta },
-    { title: "Sua música fica pronta!", text: "Você recebe sua música pronta para emocionar e eternizar momentos", icon: "🎁", color: BRAND.terracotta },
+    { title: "Sua música fica pronta!", text: "Enviamos um áudio inédito — com letra e melodia criadas só para essa pessoa — pronto para emocionar", icon: "🎁", color: BRAND.terracotta },
   ];
 
   const testimonials = [
-    { name: "Karina F.", city: "São Paulo - SP", quote: "Dei uma música de presente para meu marido no aniversário dele, e ele chorou do início ao fim. Foi inesquecível ... ", role: "Presente de aniversário" },
-    { name: "Eduardo T.", city: "Curitiba - PR", quote: "A música contou exatamente a nossa história. Gostei do atendimento, parece que cada detalhe foi pensado com carinho.", role: "Homenagem romântica" },
-    { name: "Fernanda S.", city: "Belo Horizonte - MG", quote: "A retrospectiva com as fotos ficou linda. Foi emocionante ver e ouvir a história da nossa família", role: "Presente para a família" },
+    { name: "Rayane C.", city: "São Paulo - SP", context: "Encomendou uma música para o aniversário da mãe", quote: "Gente do céu, que coisa mais linda... chorando aqui 😢 Ficou lindo demais!! Amei, amei, amei. Parabéns pelo trabalho, vocês arrasaram!", role: "Presente de aniversário" },
+    { name: "Karina F.", city: "São Paulo - SP", context: "Encomendou uma música para o aniversário do marido", quote: "Dei de presente no aniversário dele, e ele chorou do início ao fim. Foi inesquecível ...", role: "Presente de aniversário" },
+    { name: "Eduardo T.", city: "Curitiba - PR", context: "Encomendou uma música de homenagem romântica", quote: "A música contou exatamente a nossa história. Gostei do atendimento — parece que cada detalhe foi pensado com carinho.", role: "Homenagem romântica" },
   ];
 
   const faqs = [
@@ -301,6 +301,36 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* O que é */}
+      <section id="o-que-e" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.cream }}>
+        <div className="mx-auto max-w-7xl px-4 lg:px-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>
+              Entenda o produto
+            </p>
+            <h2 className="mt-3 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
+              O que é a Música Surpresa?
+            </h2>
+            <p className="mt-5 text-[15px] leading-8 lg:text-[17px]" style={{ color: BRAND.muted }}>
+              É uma música criada do zero, especialmente para alguém que você ama. Você nos conta sobre a pessoa — quem ela é, o que ela significa para você, a ocasião. A gente escreve a letra e compõe a melodia. Você recebe um áudio inédito, como se um artista tivesse gravado uma música só para ela.
+            </p>
+            <ul className="mt-8 grid grid-cols-1 gap-3 text-left sm:grid-cols-2">
+              {[
+                "Letra escrita sobre a pessoa real",
+                "Melodia e arranjo criados do zero",
+                "Áudio entregue em até 48h",
+                "Com o nome, a história e os detalhes dela — de verdade",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 rounded-2xl border border-[#E8DDD2] bg-white px-5 py-4 text-sm font-medium" style={{ color: BRAND.text }}>
+                  <span style={{ color: BRAND.terracotta }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -431,6 +461,7 @@ export default function HomePage() {
           <div className="mt-8 grid gap-5 lg:mt-12 lg:grid-cols-3 lg:gap-6">
             {testimonials.map((item) => (
               <div key={item.name} className="rounded-[22px] bg-white px-6 py-5 shadow-lg lg:p-6">
+                <p className="mb-3 text-xs font-semibold italic" style={{ color: BRAND.terracotta }}>{item.context}</p>
                 <p className="text-sm leading-6 text-[#374151] lg:text-base lg:leading-8">"{item.quote}"</p>
                 <div className="mt-4 border-t border-black/5 pt-3">
                   <p className="text-[15px] font-bold text-[#0B2454]">{item.name}</p>
