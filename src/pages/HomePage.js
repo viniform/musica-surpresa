@@ -1,7 +1,7 @@
 import slide1 from "../assets/Imagem_Index_Dia_das_Maes_02.webp";
 import slide2 from "../assets/Imagem_Index_16.webp";
 import slide11 from "../assets/Imagem_Index_Musica_Surpresa_01.webp";
-import imagemHero16 from "../assets/Imagem_Index_Pais_02.webp";
+import imagemHero16 from "../assets/Imagem_Index_Pais_04.webp";
 import whatsappIcon from "../assets/whatsapp_icon.png";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -122,24 +122,33 @@ export default function HomePage() {
 
   const heroSlides = useMemo(() => [
     {
-      title: (<>Transformamos <span style={{ color: BRAND.terracotta }}>histórias</span><br />em músicas que emocionam para sempre</>),
+      title: (<>Uma música <span style={{ color: BRAND.terracotta }}>nova</span>, criada do zero, feita para<span style={{ color: BRAND.terracotta }}> pessoas que você ama</span></>),
       description: "Você nos conta sobre a pessoa e o que quer expressar. A gente transforma isso em uma música inédita, com letra e melodia criadas especialmente para ela ✨",
-      pills: ["Curadoria\nMusical", "Entrega em\naté 48h", "Experiências\nemocionantes"],
+      pills: ["Qualidade\nMusical", "Entrega em\naté 48h", "Experiências\nemocionantes"],
       image: imagemHero16,
       imageAlt: "Casal ouvindo música juntos",
       cta: "💝 CRIAR MINHA MÚSICA",
     },
     {
-      title: (<>Homenageie <span style={{ color: BRAND.terracotta }}>pessoas especiais</span> com uma música feita só para elas</>),
-      description: "Uma música inédita feita para uma pessoa específica — como se um cantor tivesse composto só para ela ✨",
+      title: (<>
+        <span className="block sm:inline">Surpreenda com</span><span className="hidden sm:inline"> </span>
+        <span className="block sm:inline">músicas que <span style={{ color: BRAND.terracotta }}>falam</span></span><span className="hidden sm:inline"> </span>
+        <span className="block sm:inline">sobre <span style={{ color: BRAND.terracotta }}>pessoas</span></span><span className="hidden sm:inline"> </span>
+        <span className="block sm:inline" style={{ color: BRAND.terracotta }}>que você ama</span>
+      </>),
+      description: "Uma música inédita feita para uma pessoa específica — composta e gravada só para ela ✨",
       pills: ["Homenagens\nÚnicas", "Letra\nPersonalizada", "Entrega\nRápida"],
       image: slide2,
       imageAlt: "Mãe ouvindo música personalizada que a filha deu de presente",
       cta: "💝 CRIAR MINHA MÚSICA",
     },
     {
-      title: (<>Crie músicas para <span style={{ color: BRAND.terracotta }}>ocasiões especiais</span> que merecem<br />ser inesquecíveis</>),
-      description: "Para cada data que merece ser inesquecível: uma música com a história dela, os momentos de vocês e tudo que você quer dizer — transformado em canção ✨",
+      title: (<>
+        <span className="block sm:inline">Um presente diferente</span><span className="hidden sm:inline"> </span>
+        <span className="block sm:inline">para as <span style={{ color: BRAND.terracotta }}>datas</span></span><span className="hidden sm:inline"> </span>
+        <span className="block sm:inline">que <span style={{ color: BRAND.terracotta }}>mais importam</span></span>
+      </>),
+      description: "Para datas inesquecíveis, uma música com a história, os momentos de vocês e tudo que você quer dizer para a pessoa ✨",
       pills: ["Diferente", "Surpreendente", "Emocionante"],
       image: slide1,
       imageAlt: "Família ouvindo música personalizada para uma ocasião especial",
@@ -271,8 +280,8 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex items-start justify-end pt-0 lg:min-h-[430px] lg:pt-6">
-            <div className="relative h-[260px] w-full max-w-[600px] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] sm:h-[320px] lg:h-[375px] lg:rounded-[34px]" style={{ backgroundColor: BRAND.terracottaSoft }}>
-              <img fetchpriority="high" src={activeHeroSlide.image} alt={activeHeroSlide.imageAlt} className="h-full w-full object-cover object-[center_60%] transition-opacity duration-700 lg:object-center" />
+            <div className="relative aspect-[4/3] w-full max-w-[600px] overflow-hidden rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.10)] lg:rounded-[34px]" style={{ backgroundColor: BRAND.terracottaSoft }}>
+              <img fetchpriority="high" src={activeHeroSlide.image} alt={activeHeroSlide.imageAlt} className="h-full w-full object-contain object-center transition-opacity duration-700" />
             </div>
           </div>
         </div>
@@ -285,9 +294,9 @@ export default function HomePage() {
               </a>
               <div className="order-1 grid gap-4 lg:order-none lg:flex lg:items-center lg:gap-6">
                 {[
-                  { icon: "⭐", title: "100% Personalizada", sub: "Do seu jeito" },
-                  { icon: "⚡", title: "Entrega Rápida", sub: "Até 48h" },
-                  { icon: "💝", title: "Presente Inesquecível", sub: "Emociona de verdade" },
+                  { icon: "⭐", title: "100% Personalizada", sub: "com nomes e frases" },
+                  { icon: "⚡", title: "Entrega Rápida", sub: "em menos de 48h" },
+                  { icon: "💝", title: "Presente Inesquecível", sub: "que emociona de verdade" },
                 ].map((item) => (
                   <div key={item.title} className="flex items-center gap-4">
                     <div className="flex h-14 w-14 items-center justify-center rounded-full text-[26px]" style={{ backgroundColor: BRAND.terracottaSoft, color: BRAND.terracottaDark }}>
@@ -316,7 +325,9 @@ export default function HomePage() {
               O que é a Música Surpresa?
             </h2>
             <p className="mt-5 text-[15px] leading-8 lg:text-[17px]" style={{ color: BRAND.muted }}>
-              É uma música criada do zero, especialmente para alguém que você ama. Você nos conta sobre a pessoa — quem ela é, o que ela significa para você, a ocasião. A gente escreve a letra e compõe a melodia. Você recebe um áudio inédito, como se um artista tivesse gravado uma música só para ela.
+              É uma música <strong>criada do zero</strong>, especialmente para alguém que você ama, gosta, admira.<br />
+              Você nos <strong>conta sobre a pessoa</strong> — quem ela é, o que ela significa para você, a ocasião.<br /> 
+              A gente <strong>escreve a letra e compõe a melodia</strong>. <br />Você recebe uma <strong>música inédita</strong> (áudio em MP3), uma música composta e gravada <strong>só para ela</strong>.
             </p>
             <ul className="mt-8 grid grid-cols-1 gap-3 text-left sm:grid-cols-2">
               {[
