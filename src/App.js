@@ -169,6 +169,20 @@ export default function App() {
   if (isMusicFormRoute) return <MusicFormPage />;
 
   if (isUpsellRoute) {
+    const hasLead = !!sessionStorage.getItem("musicOrderLead");
+    let hasValidDraft = false;
+    try {
+      const raw = sessionStorage.getItem("musicOrderDraft");
+      if (raw) {
+        const draft = JSON.parse(raw);
+        hasValidDraft = !!draft.orderId;
+      }
+    } catch (_) {}
+    if (!hasLead && !hasValidDraft) {
+      window.location.replace("/");
+      return null;
+    }
+
     return (
       <UpsellPage
         customer={{

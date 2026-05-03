@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
+import { DEFAULT_PLAN, formatPlanLabel } from "../constants/plans";
 
 const FIELD_LIMITS = {
   name: 80,
@@ -30,7 +31,7 @@ export default function MusicFormPage() {
     console.error("Erro ao ler dados do mini formulário");
   }
 
-  const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || "Música Surpresa — R$ 99,00";
+  const selectedPlan = lead.plan || sessionStorage.getItem("selectedPlan") || formatPlanLabel(DEFAULT_PLAN);
 
   const GOOGLE_SHEETS_WEBHOOK_URL = process.env.REACT_APP_GOOGLE_SHEETS_WEBHOOK_URL || "";
 
@@ -226,7 +227,6 @@ export default function MusicFormPage() {
         style: payload.style,
       })
     );
-
 
     window.location.href = "/upsell";
   };

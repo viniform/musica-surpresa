@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { BRAND, WHATSAPP_NUMBER } from "../constants/brand";
+import { DEFAULT_PLAN, formatPlanLabel, formatPlanPrice } from "../constants/plans";
 import { formatWhatsapp, normalizeEmail, normalizeName, normalizeWhatsapp } from "../utils/formatters";
 import { isValidEmail } from "../utils/validators";
 import { generateOrderId, buildCustomerId } from "../utils/orderHelpers";
@@ -24,7 +25,7 @@ export default function HomePage() {
     name: "",
     whatsapp: "",
     email: "",
-    plan: "Música Surpresa — R$ 99,00",
+    plan: formatPlanLabel(DEFAULT_PLAN),
   });
 
   const initialPlanId = useMemo(() => "musica-surpresa", []);
@@ -202,9 +203,10 @@ export default function HomePage() {
   };
 
   const plans = [{
-    name: "Música Surpresa",
+    name: DEFAULT_PLAN.name,
     subtitle: "Música exclusiva com letra, melodia e arranjo personalizados, criada a partir da sua história e entregue em até 48 horas.",
-    price: "R$ 99,00",
+    priceFrom: DEFAULT_PLAN.hasDiscount ? formatPlanPrice(DEFAULT_PLAN.priceFrom) : null,
+    price: formatPlanPrice(DEFAULT_PLAN.price),
     color: BRAND.terracotta,
     bg: BRAND.cream,
     border: BRAND.terracottaSoft,
@@ -335,8 +337,13 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-3 pr-0 text-center lg:w-[220px] lg:flex-shrink-0 lg:items-end lg:pr-6 lg:text-right">
-                  <div className="mt-4 text-4xl font-black tracking-[0.03em] text-center whitespace-nowrap lg:text-right" style={{ color: plan.color }}>{plan.price}</div>
-                  <a href="#formulario" onClick={(e) => { e.preventDefault(); const selectedPlan = `${plan.name} — ${plan.price}`; sessionStorage.setItem("selectedPlan", selectedPlan); setFormData((prev) => ({ ...prev, plan: selectedPlan })); setTimeout(() => scrollTo("formulario"), 0); }} className="mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:ml-auto lg:mt-0 lg:w-auto" style={{ backgroundColor: plan.color }}>
+                  <div className="mt-4 text-center lg:text-right">
+                    {plan.priceFrom && (
+                      <p className="text-sm font-semibold text-[#9CA3AF] line-through">{plan.priceFrom}</p>
+                    )}
+                    <p className="text-4xl font-black tracking-[0.03em] whitespace-nowrap" style={{ color: plan.color }}>{plan.price}</p>
+                  </div>
+                  <a href="#formulario" onClick={(e) => { e.preventDefault(); const selectedPlan = formatPlanLabel(DEFAULT_PLAN); sessionStorage.setItem("selectedPlan", selectedPlan); setFormData((prev) => ({ ...prev, plan: selectedPlan })); setTimeout(() => scrollTo("formulario"), 0); }} className="mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:ml-auto lg:mt-0 lg:w-auto" style={{ backgroundColor: plan.color }}>
                     <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
                   </a>
                 </div>

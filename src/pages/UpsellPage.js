@@ -1,60 +1,9 @@
 import React, { useMemo, useState } from "react";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
+import { PLANS, formatPlanPrice } from "../constants/plans";
 
-const defaultPlans = [
-  {
-    id: "musica-surpresa",
-    name: "Música Surpresa",
-    price: 99,
-    badge: "Escolha Inicial",
-    description: "A escolha essencial: música completa personalizada, pronta para emocionar.",
-    features: [
-      "Letra personalizada",
-      "Melodia exclusiva",
-      "Arranjo personalizado",
-      "Arquivo em áudio MP3 para ouvir e compartilhar",
-    ],
-    helper: "Ideal para quem quer uma surpresa musical, direta e emocionante.",
-  },
-  {
-    id: "video-letra",
-    name: "Música + Video com a Letra",
-    price: 149,
-    badge: "Melhor custo-benefício",
-    description:
-      "Além da música, você recebe um vídeo com a letra, pronto para emocionar e compartilhar.",
-    features: [
-      "Tudo da Música Surpresa",
-      "Vídeo com 1 foto",
-      "Letra da música no vídeo",
-      "Pronto para compartilhar",
-    ],
-    featured: true,
-    helper: "Recomendado para transformar música e letra em lembrança audiovisual.",
-  },
-  {
-    id: "retrospectiva",
-    name: "Música + Retrospectiva",
-    price: 199,
-    badge: "Experiência premium",
-    description:
-      "A experiência mais completa: música com letra em retrospectiva com fotos personalizadas.",
-    features: [
-      "Música Supresa com letra na tela",
-      "Retrospectiva com até 30 fotos",
-      "Edição de vídeo mais completa",
-      "Entrega premium",
-    ],
-    helper: "Perfeito para datas especiais, festas, aniversários, bodas e homenagens.",
-  },
-];
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
-}
+const defaultPlans = PLANS;
+const formatCurrency = formatPlanPrice;
 
 function readStoredOrder() {
   try {
@@ -124,7 +73,7 @@ export default function UpsellPage({
     const matchedPlan = plans.find((plan) => storedOrder.plan.includes(plan.name));
     return matchedPlan?.id || initialPlanId;
   }, [storedOrder.plan, initialPlanId, plans]);
-  
+
   const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
 
   const selectedPlan = useMemo(() => {
@@ -172,56 +121,57 @@ export default function UpsellPage({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-const handleContinue = async () => {
-  if (effectiveCustomer.orderId) {
-    const checkoutPayload = {
-      orderId: effectiveCustomer.orderId,
-      customerId: effectiveCustomer.customerId,
-      stage: "checkout_iniciado",
-      planId: selectedPlan.id,
-      planTitle: selectedPlan.name,
-      amount: selectedPlan.price,
-      customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
-      email: effectiveCustomer.email || "",
-      whatsapp: effectiveCustomer.whatsapp || "",
-      recipient: effectiveCustomer.recipient || "",
-      relationship: effectiveCustomer.relationship || "",
-      occasion: effectiveCustomer.occasion || "",
-      description: effectiveCustomer.description || "",
-      message: effectiveCustomer.message || "",
-      moments: effectiveCustomer.moments || "",
-      specialPhrase: effectiveCustomer.specialPhrase || "",
-      style: effectiveCustomer.style || "",
-      voiceType: effectiveCustomer.voiceType || "",
-      observations: effectiveCustomer.observations || "",
-      externalReference: effectiveCustomer.orderId,
-    };
 
-    sessionStorage.setItem("musicOrderDraft", JSON.stringify({
-      orderId: effectiveCustomer.orderId || "",
-      customerId: effectiveCustomer.customerId || "",
-      plan: selectedPlan.name,
-      planId: selectedPlan.id,
-      planTitle: selectedPlan.name,
-      amount: selectedPlan.price,
-      recipient: effectiveCustomer.recipient || "",
-      occasion: effectiveCustomer.occasion || "",
-      style: effectiveCustomer.style || "",
-    }));
-    await syncToSheet(checkoutPayload, { preferBeacon: false });
-  }
+  const handleContinue = async () => {
+    if (effectiveCustomer.orderId) {
+      const checkoutPayload = {
+        orderId: effectiveCustomer.orderId,
+        customerId: effectiveCustomer.customerId,
+        stage: "checkout_iniciado",
+        planId: selectedPlan.id,
+        planTitle: selectedPlan.name,
+        amount: selectedPlan.price,
+        customerName: effectiveCustomer.name || effectiveCustomer.customerName || "",
+        email: effectiveCustomer.email || "",
+        whatsapp: effectiveCustomer.whatsapp || "",
+        recipient: effectiveCustomer.recipient || "",
+        relationship: effectiveCustomer.relationship || "",
+        occasion: effectiveCustomer.occasion || "",
+        description: effectiveCustomer.description || "",
+        message: effectiveCustomer.message || "",
+        moments: effectiveCustomer.moments || "",
+        specialPhrase: effectiveCustomer.specialPhrase || "",
+        style: effectiveCustomer.style || "",
+        voiceType: effectiveCustomer.voiceType || "",
+        observations: effectiveCustomer.observations || "",
+        externalReference: effectiveCustomer.orderId,
+      };
 
-  if (typeof onContinueToPayment === "function") {
-    onContinueToPayment(selectedPlan);
-    return;
-  }
+      sessionStorage.setItem("musicOrderDraft", JSON.stringify({
+        orderId: effectiveCustomer.orderId || "",
+        customerId: effectiveCustomer.customerId || "",
+        plan: selectedPlan.name,
+        planId: selectedPlan.id,
+        planTitle: selectedPlan.name,
+        amount: selectedPlan.price,
+        recipient: effectiveCustomer.recipient || "",
+        occasion: effectiveCustomer.occasion || "",
+        style: effectiveCustomer.style || "",
+      }));
+      await syncToSheet(checkoutPayload, { preferBeacon: false });
+    }
 
-  alert(
-    `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(
-      selectedPlan.price
-    )}`
-  );
-};
+    if (typeof onContinueToPayment === "function") {
+      onContinueToPayment(selectedPlan);
+      return;
+    }
+
+    alert(
+      `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(
+        selectedPlan.price
+      )}`
+    );
+  };
 
   const faqs = [
     {
@@ -230,7 +180,7 @@ const handleContinue = async () => {
     },
     {
       question: "Posso optar só pela música?",
-      answer: "Sim. A opção Música Surpresa continua disponível por R$ 99,00.",
+      answer: `Sim. A opção Música Surpresa continua disponível por ${formatCurrency(defaultPlans[0].price)}.`,
     },
     {
       question: "Quando recebo?",
@@ -264,25 +214,31 @@ const handleContinue = async () => {
 
       <main className="min-h-screen bg-[#FFF8F3] px-4 py-4 text-[#0B2454] lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <section className="mt-4 rounded-[24px] border border-[#E8DDD2] bg-[#FFF8F3] p-5 shadow-sm lg:p-4">
+          <section className="mt-4 rounded-[28px] border border-[#E8DDD2] bg-[#FFF8F3] px-5 py-5 shadow-sm md:px-6 lg:px-7 lg:py-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#B45D5D]">
               Resumo do seu pedido
             </p>
-            <div className="mt-4 grid gap-8 md:grid-cols-3">
+            <div className="mt-5 grid gap-7 md:grid-cols-3 md:gap-10">
               <div>
-                <p className="text-sm font-semibold text-[#6B7280]">Presente para</p>
-                <p className="mt-1 text-base font-bold">{effectiveCustomer.recipient || "Pessoa especial"}</p>
+                <p className="text-sm font-bold text-[#6B7280] lg:text-base">Presente para</p>
+                <p className="mt-1 text-base font-black text-[#0B2454] lg:text-lg">
+                  {effectiveCustomer.recipient || "Pessoa especial"}
+                </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#6B7280]">Ocasião</p>
-                <p className="mt-1 text-base font-bold">{effectiveCustomer.occasion || "Ocasião especial"}</p>
+                <p className="text-sm font-bold text-[#6B7280] lg:text-base">Ocasião</p>
+                <p className="mt-1 text-base font-black text-[#0B2454] lg:text-lg">
+                  {effectiveCustomer.occasion || "Ocasião especial"}
+                </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#6B7280]">Estilo desejado</p>
-                <p className="mt-1 text-base font-bold">{effectiveCustomer.style || "Personalizado"}</p>
+                <p className="text-sm font-bold text-[#6B7280] lg:text-base">Estilo desejado</p>
+                <p className="mt-1 text-base font-black text-[#0B2454] lg:text-lg">
+                  {effectiveCustomer.style || "Personalizado"}
+                </p>
               </div>
             </div>
-            <p className="mt-2 text-sm leading-6 text-[#5B6474]">
+            <p className="mt-5 text-sm leading-6 text-[#5B6474] lg:text-base">
               Suas informações foram recebidas. A escolha abaixo define apenas o formato da
               entrega final antes de seguirmos para o pagamento.
             </p>
@@ -336,9 +292,18 @@ const handleContinue = async () => {
                     </span>
                   </div>
 
-                  <p className="mt-3 text-3xl font-black tracking-[-0.03em]">
-                    {formatCurrency(plan.price)}
-                  </p>
+                  {/* Preço com sobretachado */}
+                  <div className="mt-3">
+                    {plan.hasDiscount && plan.priceFrom && (
+                      <p className="text-sm font-semibold text-[#9CA3AF] line-through">
+                        {formatCurrency(plan.priceFrom)}
+                      </p>
+                    )}
+                    <p className="text-3xl font-black tracking-[-0.03em]">
+                      {formatCurrency(plan.price)}
+                    </p>
+                  </div>
+
                   <p className="mt-3 text-sm leading-6 text-[#5B6474]">{plan.description}</p>
                   <p className="mt-2 rounded-2xl bg-[#FFF8F3] px-4 py-2.5 text-sm font-semibold leading-6 text-[#0B2454]">
                     {plan.helper}
@@ -380,9 +345,15 @@ const handleContinue = async () => {
                 </p>
               </div>
 
+              {/* Resumo de preço com sobretachado */}
               <div className="lg:text-right">
                 <p className="text-sm font-semibold text-[#6B7280]">Total</p>
-                <p className="mt-2 text-4xl font-black tracking-[-0.03em]">
+                {selectedPlan.hasDiscount && selectedPlan.priceFrom && (
+                  <p className="mt-1 text-sm font-semibold text-[#9CA3AF] line-through">
+                    {formatCurrency(selectedPlan.priceFrom)}
+                  </p>
+                )}
+                <p className="mt-1 text-4xl font-black tracking-[-0.03em]">
                   {formatCurrency(selectedPlan.price)}
                 </p>
               </div>
