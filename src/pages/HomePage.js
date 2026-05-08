@@ -127,7 +127,7 @@ export default function HomePage() {
       pills: ["Qualidade\nMusical", "Entrega em\naté 48h", "Experiências\nemocionantes"],
       image: imagemHero16,
       imageAlt: "Casal ouvindo música juntos",
-      cta: "💝 CRIAR MINHA MÚSICA",
+      cta: "💝 CRIAR MÚSICA",
     },
     {
       title: (<>
@@ -140,7 +140,7 @@ export default function HomePage() {
       pills: ["Homenagens\nÚnicas", "Letra\nPersonalizada", "Entrega\nRápida"],
       image: slide2,
       imageAlt: "Mãe ouvindo música personalizada que a filha deu de presente",
-      cta: "💝 CRIAR MINHA MÚSICA",
+      cta: "💝 CRIAR MÚSICA",
     },
     {
       title: (<>
@@ -152,7 +152,7 @@ export default function HomePage() {
       pills: ["Diferente", "Surpreendente", "Emocionante"],
       image: slide1,
       imageAlt: "Família ouvindo música personalizada para uma ocasião especial",
-      cta: "💝 CRIAR MINHA MÚSICA",
+      cta: "💝 CRIAR MÚSICA",
     },
   ], []);
 
@@ -221,13 +221,13 @@ export default function HomePage() {
     border: BRAND.terracottaSoft,
     icon: "🎁",
     features: ["Letra personalizada", "Melodia exclusiva", "Arranjo profissional", "Entrega em até 48h", "Áudio com qualidade"],
-    cta: "💝 CRIAR MINHA MÚSICA",
+    cta: "💝 CRIAR MÚSICA",
     featured: false,
   }];
 
   const steps = [
     { title: "Você conta tudo sobre ela ...", text: "Preencha o formulário contando quem é a pessoa, sua relação com ela, a ocasião e o que quer expressar com a música", icon: "✍️", color: BRAND.terracotta },
-    { title: "A gente prepara a sua música ...", text: "Nossa equipe cria letra e melodia personalizadas para a sua música", icon: "🎧", color: BRAND.terracotta },
+    { title: "Preparamos a sua música ...", text: "Nossa equipe cria letra e melodia personalizadas para a sua música", icon: "🎧", color: BRAND.terracotta },
     { title: "Produzimos, revisamos ... ", text: "Produzimos, analisamos e revisamos sua música com toda a nossa experiência", icon: "🔍", color: BRAND.terracotta },
     { title: "Sua música fica pronta!", text: "Enviamos um áudio inédito — com letra e melodia criadas só para essa pessoa — pronto para emocionar", icon: "🎁", color: BRAND.terracotta },
   ];
@@ -290,7 +290,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <a href="#formulario" style={{ backgroundColor: BRAND.terracotta, boxShadow: "0 14px 34px rgba(201,79,54,0.22)" }} className="order-2 inline-flex min-h-[68px] items-center justify-center rounded-[18px] px-8 text-[18px] font-black text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-xl lg:order-none lg:min-w-[400px] lg:px-10 lg:text-[20px]">
-                <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
+                <span aria-hidden="true">💝 </span>CRIAR MÚSICA
               </a>
               <div className="order-1 grid gap-4 lg:order-none lg:flex lg:items-center lg:gap-6">
                 {[
@@ -317,78 +317,71 @@ export default function HomePage() {
       {/* O que é */}
       <section id="o-que-e" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.cream }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="text-center mb-10">
             <p className="text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BRAND.terracotta }}>
               Entenda o produto
             </p>
             <h2 className="mt-3 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
               O que é a Música Surpresa?
             </h2>
-            <p className="mt-5 text-[15px] leading-8 lg:text-[17px]" style={{ color: BRAND.muted }}>
-              É uma música <strong>criada do zero</strong>, especialmente para alguém que você ama, gosta, admira.<br />
-              Você nos <strong>conta sobre a pessoa</strong> — quem ela é, o que ela significa para você, a ocasião.<br /> 
-              A gente <strong>escreve a letra e compõe a melodia</strong>. <br />Você recebe uma <strong>música inédita</strong> (áudio em MP3), uma música composta e gravada <strong>só para ela</strong>.
-            </p>
-            <ul className="mt-8 grid grid-cols-1 gap-3 text-left sm:grid-cols-2">
-              {[
-                "Letra escrita sobre a pessoa real",
-                "Melodia e arranjo criados do zero",
-                "Áudio entregue em até 48h",
-                "Com o nome, a história e os detalhes dela — de verdade",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 rounded-2xl border border-[#E8DDD2] bg-white px-5 py-4 text-sm font-medium" style={{ color: BRAND.text }}>
-                  <span style={{ color: BRAND.terracotta }}>✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
           </div>
-        </div>
-      </section>
 
-      {/* Planos */}
-      <section id="planos" aria-labelledby="titulo-como-funciona" className="scroll-mt-24 pt-3 pb-8 lg:scroll-mt-24" style={{ backgroundColor: BRAND.warmBg }}>
-        <div className="mx-auto max-w-7xl px-3 lg:px-10">
-          <div className="text-center">
-            <h2 id="titulo-como-funciona" className="mt-1 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
-              ✨ Como criamos a sua música surpresa ✨
-            </h2>
-          </div>
-          <div className="mt-10 w-full">
-            {plans.map((plan) => (
-              <div key={plan.name} className="relative flex flex-col gap-2 rounded-[20px] border px-2 py-3 lg:flex-row lg:items-center lg:justify-between" style={{ backgroundColor: plan.bg, borderColor: plan.border }}>
-                <div className="flex items-center gap-4 pl-4 lg:w-[290px] lg:flex-shrink-0 lg:pl-6">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full text-5xl text-white" style={{ backgroundColor: plan.color }}>{plan.icon}</div>
-                  <h3 className="text-4xl font-black leading-[0.9] tracking-[-0.04em] lg:text-[36px]" style={{ color: plan.color }}>
-                    {plan.name.split(" ")[0]}<br />{plan.name.split(" ").slice(1).join(" ")}
-                  </h3>
-                </div>
-                <div className="lg:min-w-0 lg:flex-1 lg:pr-8">
-                  <p className="text-sm leading-7" style={{ color: BRAND.muted }}>{plan.subtitle}</p>
-                  <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-sm font-medium text-[#374151] lg:grid-cols-3">
-                    {plan.features.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span style={{ color: plan.color }}>✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 hidden text-sm font-semibold leading-6 text-[#6B7280] lg:block">
-                    🔒 Pagamento 100% seguro • Parcele em até 12x • Satisfação garantida
+          {/* 3 cards sequenciais */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                icon: "💬",
+                title: "Você conta pra gente",
+                text: "Quem é a pessoa, o que ela significa para você, a ocasião e o que quer expressar",
+                step: "1",
+              },
+              {
+                icon: "🎵",
+                title: "A gente produz a música",
+                text: "Produzimos a letra e a melodia com base em tudo que você nos contou",
+                step: "2",
+              },
+              {
+                icon: "🎁",
+                title: "Você recebe o áudio",
+                text: "Uma música inédita em MP3 — com o nome, as frases, a história da pessoa — pronta para emocionar",
+                step: "3",
+              },
+            ].map((card, index, arr) => (
+              <div key={card.step} className="relative flex flex-col items-center text-center rounded-[24px] border border-[#E8DDD2] bg-white px-6 py-8 shadow-sm">
+                {/* seta entre cards — só aparece entre eles, não após o último */}
+                {index < arr.length - 1 && (
+                  <div className="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-8 w-8 items-center justify-center rounded-full text-lg font-black" style={{ backgroundColor: BRAND.terracottaSoft, color: BRAND.terracotta }}>
+                    →
                   </div>
+                )}
+                <div className="flex h-16 w-16 items-center justify-center rounded-full text-3xl mb-4" style={{ backgroundColor: BRAND.terracottaSoft }}>
+                  {card.icon}
                 </div>
-                <div className="flex flex-col items-center gap-3 pr-0 text-center lg:w-[220px] lg:flex-shrink-0 lg:items-end lg:pr-6 lg:text-right">
-                  <div className="mt-4 text-center lg:text-right">
-                    {plan.priceFrom && (
-                      <p className="text-sm font-semibold text-[#9CA3AF] line-through">{plan.priceFrom}</p>
-                    )}
-                    <p className="text-4xl font-black tracking-[0.03em] whitespace-nowrap" style={{ color: plan.color }}>{plan.price}</p>
-                  </div>
-                  <a href="#formulario" onClick={(e) => { e.preventDefault(); const selectedPlan = formatPlanLabel(DEFAULT_PLAN); sessionStorage.setItem("selectedPlan", selectedPlan); setFormData((prev) => ({ ...prev, plan: selectedPlan })); setTimeout(() => scrollTo("formulario"), 0); }} className="mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:ml-auto lg:mt-0 lg:w-auto" style={{ backgroundColor: plan.color }}>
-                    <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
-                  </a>
-                </div>
+                <span className="text-xs font-bold uppercase tracking-[0.18em] mb-2" style={{ color: BRAND.terracotta }}>
+                  Passo {card.step}
+                </span>
+                <h3 className="text-lg font-black mb-3" style={{ color: BRAND.navy }}>
+                  {card.title}
+                </h3>
+                <p className="text-sm leading-7" style={{ color: BRAND.muted }}>
+                  {card.text}
+                </p>
               </div>
+            ))}
+          </div>
+
+          {/* Selos na base */}
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            {[
+              "✓ Letra sobre a pessoa real",
+              "✓ Melodia criada do zero",
+              "✓ Entrega em até 48h",
+              "✓ Com os detalhes dela — de verdade",
+            ].map((selo) => (
+              <span key={selo} className="rounded-full border border-[#E8DDD2] bg-white px-5 py-2 text-sm font-semibold" style={{ color: BRAND.terracottaDark }}>
+                {selo}
+              </span>
             ))}
           </div>
         </div>
@@ -399,7 +392,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 lg:px-10">
           <div className="text-center">
             <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-8 lg:text-4xl" style={{ color: BRAND.navy }}>
-              É simples, rápido e feito com muito carinho
+              Veja como funciona, passo a passo
             </h2>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-8">
@@ -417,10 +410,10 @@ export default function HomePage() {
       </section>
 
       {/* Player de demos */}
-      <section id="musicas" aria-labelledby="titulo-musicas" className="scroll-mt-24 pb-8 pt-8 lg:scroll-mt-10 lg:py-20" style={{ backgroundColor: BRAND.warmBg }}>
+      <section id="musicas" aria-labelledby="titulo-musicas" className="scroll-mt-24 pb-8 pt-0 lg:scroll-mt-10 lg:pb-20 lg:pt-6" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto max-w-7xl px-4 lg:px-9">
           <div className="text-center">
-            <h2 id="titulo-musicas" className="mt-2 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:mt-3 lg:text-4xl" style={{ color: BRAND.navy }}>✨Músicas criadas para emocionar✨</h2>
+            <h2 id="titulo-musicas" className="mt-0 text-2xl font-black leading-tight tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>✨Músicas criadas para emocionar✨</h2>
             <p className="mx-auto mt-3 max-w-4xl text-[15px] leading-7 text-[#4B5563] lg:mt-4 lg:text-base">
               Ouça músicas criadas por nós e comprove a qualidade, emoção e cuidado com cada pedido
             </p>
@@ -486,6 +479,54 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Planos */}
+      <section id="planos" aria-labelledby="titulo-como-funciona" className="scroll-mt-24 pt-8 pb-8 lg:scroll-mt-24 lg:pt-12" style={{ backgroundColor: BRAND.warmBg }}>
+        <div className="mx-auto max-w-7xl px-3 lg:px-10">
+          <div className="text-center">
+            <h2 id="titulo-como-funciona" className="mt-1 text-2xl font-black tracking-[-0.03em] sm:text-3xl lg:text-4xl" style={{ color: BRAND.navy }}>
+              ✨ Quanto custa e o que está incluído ✨
+            </h2>
+          </div>
+          <div className="mt-10 w-full">
+            {plans.map((plan) => (
+              <div key={plan.name} className="relative flex flex-col gap-2 rounded-[20px] border px-2 py-3 lg:flex-row lg:items-center lg:justify-between" style={{ backgroundColor: plan.bg, borderColor: plan.border }}>
+                <div className="flex items-center gap-4 pl-4 lg:w-[290px] lg:flex-shrink-0 lg:pl-6">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full text-5xl text-white" style={{ backgroundColor: plan.color }}>{plan.icon}</div>
+                  <h3 className="text-4xl font-black leading-[0.9] tracking-[-0.04em] lg:text-[36px]" style={{ color: plan.color }}>
+                    {plan.name.split(" ")[0]}<br />{plan.name.split(" ").slice(1).join(" ")}
+                  </h3>
+                </div>
+                <div className="lg:min-w-0 lg:flex-1 lg:pr-8">
+                  <p className="text-sm leading-7" style={{ color: BRAND.muted }}>{plan.subtitle}</p>
+                  <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-sm font-medium text-[#374151] lg:grid-cols-3">
+                    {plan.features.map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <span style={{ color: plan.color }}>✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-4 hidden text-sm font-semibold leading-6 text-[#6B7280] lg:block">
+                    🔒 Pagamento 100% seguro • Parcele em até 12x • Satisfação garantida
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-3 pr-0 text-center lg:w-[220px] lg:flex-shrink-0 lg:items-end lg:pr-6 lg:text-right">
+                  <div className="mt-4 text-center lg:text-right">
+                    {plan.priceFrom && (
+                      <p className="text-sm font-semibold text-[#9CA3AF] line-through">{plan.priceFrom}</p>
+                    )}
+                    <p className="text-4xl font-black tracking-[0.03em] whitespace-nowrap" style={{ color: plan.color }}>{plan.price}</p>
+                  </div>
+                  <a href="#formulario" onClick={(e) => { e.preventDefault(); const selectedPlan = formatPlanLabel(DEFAULT_PLAN); sessionStorage.setItem("selectedPlan", selectedPlan); setFormData((prev) => ({ ...prev, plan: selectedPlan })); setTimeout(() => scrollTo("formulario"), 0); }} className="mt-2 flex w-full min-w-[200px] items-center justify-center rounded-xl px-3 py-3 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:scale-[1.01] hover:opacity-95 lg:ml-auto lg:mt-0 lg:w-auto" style={{ backgroundColor: plan.color }}>
+                    <span aria-hidden="true">💝 </span>CRIAR MÚSICA
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Formulário */}
       <section id="formulario" aria-labelledby="titulo-formulario" className="scroll-mt-24 py-10 lg:py-14" style={{ backgroundColor: BRAND.warmBg }}>
         <div className="mx-auto grid max-w-7xl items-start gap-10 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
@@ -512,7 +553,7 @@ export default function HomePage() {
               <input type="hidden" name="plan" value={formData.plan} />
             </div>
             <button type="button" onClick={handleContinueToMusicForm} style={{ backgroundColor: BRAND.terracotta, boxShadow: "0 10px 22px rgba(169,98,96,0.18)" }} className="mt-6 w-full rounded-xl px-5 py-4 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:opacity-95 hover:shadow-[0_14px_28px_rgba(169,98,96,0.24)]">
-              <span aria-hidden="true">💝 </span>CRIAR MINHA MÚSICA
+              <span aria-hidden="true">💝 </span>CRIAR MÚSICA
             </button>
             <p className="mt-4 text-center text-sm text-[#6B7280]">Ao continuar, você iniciará a criação da sua música 😉</p>
           </div>

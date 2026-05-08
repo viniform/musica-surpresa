@@ -40,37 +40,37 @@ export default function Header({ logoMusicaSurpresa }) {
           className="hidden items-center gap-8 text-sm font-semibold lg:flex"
           style={{ color: BRAND.navy }}
         >
-          <a
-            href="#planos"
-            onClick={(e) => { e.preventDefault(); scrollTo("planos"); }}
-            className="transition hover:opacity-70"
-          >
-            Como funciona?
+          <a href="#o-que-e" onClick={(e) => { e.preventDefault(); scrollTo("o-que-e"); }} className="transition hover:opacity-70">
+            O que é?
           </a>
-          <a href="#musicas" className="transition hover:opacity-70">
-            Ouça Nossas Músicas
+          <a href="#como-funciona" onClick={(e) => { e.preventDefault(); scrollTo("como-funciona"); }} className="transition hover:opacity-70">
+            Como funciona
           </a>
-          <a href="#depoimentos" className="transition hover:opacity-70">
+          <a href="#musicas" onClick={(e) => { e.preventDefault(); scrollTo("musicas"); }} className="transition hover:opacity-70">
+            Ouça músicas
+          </a>
+          <a href="#depoimentos" onClick={(e) => { e.preventDefault(); scrollTo("depoimentos"); }} className="transition hover:opacity-70">
             Depoimentos
           </a>
-          <a href="#faq" className="transition hover:opacity-70">
+          <a href="#planos" onClick={(e) => { e.preventDefault(); scrollTo("planos"); }} className="transition hover:opacity-70">
+            Planos
+          </a>
+          <a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo("faq"); }} className="transition hover:opacity-70">
             Perguntas
           </a>
           <a href="/quem-somos" className="transition hover:opacity-70">
             Quem somos
-          </a>
-          <a href="#contato" className="transition hover:opacity-70">
-            Contato
           </a>
         </nav>
 
         <div className="flex items-center gap-3">
           <a
             href="#formulario"
+            onClick={(e) => { e.preventDefault(); scrollTo("formulario"); }}
             style={{ backgroundColor: BRAND.terracotta }}
             className="hidden rounded-xl px-5 py-3 text-xs font-bold text-white shadow-sm transition hover:opacity-95 lg:inline-block lg:text-sm"
           >
-            💝 CRIAR MINHA MÚSICA
+            💝 CRIAR MÚSICA
           </a>
 
           <button
@@ -90,59 +90,29 @@ export default function Header({ logoMusicaSurpresa }) {
           style={{ backgroundColor: BRAND.cream }}
         >
           <nav className="flex flex-col gap-3 text-sm font-semibold text-[#0B2454]">
-            <a
-              href="#planos"
-              onClick={(e) => {
-                e.preventDefault();
-                setMobileMenuOpen(false);
-                scrollTo("planos");
-              }}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
+            <a href="#o-que-e" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("o-que-e"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
+              O que é?
+            </a>
+            <a href="#como-funciona" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("como-funciona"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
               Como funciona
             </a>
-            <a
-              href="#musicas"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
-              Ouça nossas músicas
+            <a href="#musicas" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("musicas"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
+              Ouça músicas
             </a>
-            <a
-              href="#depoimentos"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
+            <a href="#depoimentos" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("depoimentos"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
               Depoimentos
             </a>
-            <a
-              href="#faq"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
+            <a href="#planos" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("planos"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
+              Planos
+            </a>
+            <a href="#faq" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("faq"); }} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
               Perguntas
             </a>
-            <a
-              href="/quem-somos"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
+            <a href="/quem-somos" onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
               Quem somos
             </a>
-            <a
-              href="#contato"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]"
-            >
-              Contato
-            </a>
-            <a
-              href="#formulario"
-              onClick={() => setMobileMenuOpen(false)}
-              style={{ backgroundColor: BRAND.terracotta }}
-              className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white shadow-sm"
-            >
-              💝 CRIAR MINHA MÚSICA
+            <a href="#formulario" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); scrollTo("formulario"); }} style={{ backgroundColor: BRAND.terracotta }} className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white shadow-sm">
+              💝 CRIAR MÚSICA
             </a>
           </nav>
         </div>

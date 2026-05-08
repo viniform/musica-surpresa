@@ -198,13 +198,13 @@ export default function UpsellPage({
     <>
       <header className="sticky top-0 z-50 border-b border-black/5 bg-[#F2EEE9]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:px-8">
-          <div className="flex items-center">
+          <a href="/" aria-label="Voltar para a página inicial" className="flex items-center">
             <img
               src={logoMusicaSurpresa}
               alt="Música Surpresa"
               className="h-10 w-auto lg:h-12"
             />
-          </div>
+          </a>
 
           <div className="hidden rounded-full bg-white/70 px-6 py-2 text-sm font-bold text-[#0B2454] shadow-sm sm:block">
             Pedido quase finalizado 🎵

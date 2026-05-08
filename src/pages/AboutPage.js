@@ -45,14 +45,20 @@ export default function AboutPage() {
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-semibold lg:flex" style={{ color: BRAND.navy }}>
-            <button type="button" onClick={() => goToHomeSection("planos")} className="transition hover:opacity-70">
-              Como funciona?
+            <button type="button" onClick={() => goToHomeSection("o-que-e")} className="transition hover:opacity-70">
+              O que é?
+            </button>
+            <button type="button" onClick={() => goToHomeSection("como-funciona")} className="transition hover:opacity-70">
+              Como funciona
             </button>
             <button type="button" onClick={() => goToHomeSection("musicas")} className="transition hover:opacity-70">
-              Ouça Nossas Músicas
+              Ouça músicas
             </button>
             <button type="button" onClick={() => goToHomeSection("depoimentos")} className="transition hover:opacity-70">
               Depoimentos
+            </button>
+            <button type="button" onClick={() => goToHomeSection("planos")} className="transition hover:opacity-70">
+              Planos
             </button>
             <button type="button" onClick={() => goToHomeSection("faq")} className="transition hover:opacity-70">
               Perguntas
@@ -60,9 +66,6 @@ export default function AboutPage() {
             <a href="/quem-somos" className="transition hover:opacity-70">
               Quem somos
             </a>
-            <button type="button" onClick={() => goToHomeSection("contato")} className="transition hover:opacity-70">
-              Contato
-            </button>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -72,7 +75,7 @@ export default function AboutPage() {
               style={{ backgroundColor: BRAND.terracotta }}
               className="hidden rounded-xl px-5 py-3 text-xs font-bold text-white shadow-sm transition hover:opacity-95 lg:inline-block lg:text-sm"
             >
-              💝 CRIAR MINHA MÚSICA
+              💝 CRIAR MÚSICA
             </button>
 
             <button
@@ -89,48 +92,29 @@ export default function AboutPage() {
         {mobileMenuOpen && (
           <div className="border-t border-black/5 px-4 py-4 lg:hidden" style={{ backgroundColor: BRAND.cream }}>
             <nav className="flex flex-col gap-3 text-sm font-semibold text-[#0B2454]">
-              <button
-                type="button"
-                onClick={() => goToHomeSection("planos")}
-                className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]"
-              >
+              <button type="button" onClick={() => goToHomeSection("o-que-e")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
+                O que é?
+              </button>
+              <button type="button" onClick={() => goToHomeSection("como-funciona")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
                 Como funciona
               </button>
-              <button
-                type="button"
-                onClick={() => goToHomeSection("musicas")}
-                className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]"
-              >
-                Ouça nossas músicas
+              <button type="button" onClick={() => goToHomeSection("musicas")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
+                Ouça músicas
               </button>
-              <button
-                type="button"
-                onClick={() => goToHomeSection("depoimentos")}
-                className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]"
-              >
+              <button type="button" onClick={() => goToHomeSection("depoimentos")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
                 Depoimentos
               </button>
-              <button
-                type="button"
-                onClick={() => goToHomeSection("faq")}
-                className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]"
-              >
+              <button type="button" onClick={() => goToHomeSection("planos")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
+                Planos
+              </button>
+              <button type="button" onClick={() => goToHomeSection("faq")} className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]">
                 Perguntas
               </button>
-              <button
-                type="button"
-                onClick={() => goToHomeSection("contato")}
-                className="rounded-lg px-2 py-2 text-left transition hover:bg-[#FCE7DD]"
-              >
-                Contato
-              </button>
-              <button
-                type="button"
-                onClick={() => goToHomeSection("formulario")}
-                style={{ backgroundColor: BRAND.terracotta }}
-                className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white shadow-sm"
-              >
-                💝 CRIAR MINHA MÚSICA
+              <a href="/quem-somos" onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-2 py-2 transition hover:bg-[#FCE7DD]">
+                Quem somos
+              </a>
+              <button type="button" onClick={() => goToHomeSection("formulario")} style={{ backgroundColor: BRAND.terracotta }} className="mt-2 rounded-xl px-4 py-3 text-center text-sm font-bold text-white shadow-sm">
+                💝 CRIAR MÚSICA
               </button>
             </nav>
           </div>
@@ -282,7 +266,7 @@ export default function AboutPage() {
             className="mt-6 rounded-xl px-6 py-3 font-bold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
             style={{ backgroundColor: BRAND.terracotta }}
           >
-            💝 CRIAR MINHA MÚSICA
+            💝 CRIAR MÚSICA
           </button>
         </section>
       </div>
