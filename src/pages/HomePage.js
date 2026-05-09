@@ -115,7 +115,7 @@ export default function HomePage() {
   };
 
   const handleQuickWhatsApp = () => {
-    const message = "Olá! Tenho algumas dúvidas sobre a Música Surpresa e gostaria de falar com vocês.";
+    const message = "Olá! Tenho algumas dúvidas sobre a música surpresa e gostaria de falar com vocês.";
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
