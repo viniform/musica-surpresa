@@ -46,7 +46,7 @@ export default function Footer({ BRAND, logoMusicaSurpresa }) {
             Atendimento
           </p>
           <ul className="mt-4 space-y-3 text-sm text-white/80">
-            <li>Entrega em até 48h</li>
+            <li>Entrega em até 24h</li>
             <li>Suporte humanizado</li>
             <li>Pedidos personalizados</li>
           </ul>

@@ -86,7 +86,6 @@ export default function MusicFormPage() {
   });
 
   const [errors, setErrors] = useState({});
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   useEffect(() => {
     const storedLead = sessionStorage.getItem("musicOrderLead");
@@ -165,8 +164,6 @@ export default function MusicFormPage() {
     if (!form.message) newErrors.message = "Informe a mensagem principal da música";
     if (!form.moments) newErrors.moments = "Conte ao menos um momento marcante";
     if (!form.style) newErrors.style = "Informe o estilo ou ritmo desejado";
-    if (!acceptedTerms) newErrors.acceptedTerms = "Você precisa aceitar os Termos de Serviço para continuar";
-
     if (form.email && !emailRegex.test(form.email.trim())) {
       newErrors.email = "Informe um e-mail válido";
     }
@@ -430,40 +427,12 @@ export default function MusicFormPage() {
     />
   </div>
 
-  <div className="mt-4 rounded-2xl border border-[#E8DDD2] bg-[#FFF8F3] p-4">
-    <label className="flex items-center justify-center gap-3 text-sm leading-6 text-[#5B6474] text-center">
-      <input
-        type="checkbox"
-        checked={acceptedTerms}
-        onChange={(e) => setAcceptedTerms(e.target.checked)}
-        className="h-4 w-4 rounded border-[#B45D5D] text-[#B45D5D]"
-      />
-      <span>
-        Li e concordo com os{" "}
-        <a
-          href="/termos"
-          target="_blank"
-          rel="noreferrer"
-          className="font-bold text-[#B45D5D] underline underline-offset-2"
-        >
-          Termos de Serviço
-        </a>{" "}
-        da Música Surpresa.
-      </span>
-    </label>
-    {!acceptedTerms && errors.acceptedTerms && (
-      <p className="mt-3 text-center text-xs text-red-500">{errors.acceptedTerms}</p>
-    )}
-  </div>
-
   <button
     type="button"
     onClick={() => {
       handleSubmit();
     }}
-    className={`mt-4 rounded-xl px-6 py-4 text-sm font-bold text-white transition ${
-      acceptedTerms ? "bg-[#B45D5D] hover:bg-[#9F4F4F]" : "cursor-not-allowed bg-[#B45D5D]/50"
-    }`}
+    className="mt-4 rounded-xl px-6 py-4 text-sm font-bold text-white transition bg-[#B45D5D] hover:bg-[#9F4F4F]"
   >
     Criar minha música
   </button>

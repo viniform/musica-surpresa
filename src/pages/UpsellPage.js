@@ -51,6 +51,21 @@ async function syncToSheet(payload, options = {}) {
   }
 }
 
+const termosConteudo = [
+  { titulo: "1. Sobre o serviço", texto: "A Música Surpresa oferece a criação de músicas personalizadas a partir de histórias fornecidas pelo cliente, combinando tecnologia de inteligência artificial com direção criativa e refinamento humano." },
+  { titulo: "2. Como funciona", texto: "O cliente fornece informações como nomes, contexto e história. A partir disso, desenvolvemos uma composição personalizada, com ajustes internos para garantir qualidade, conforme o plano contratado." },
+  { titulo: "3. Natureza do resultado", texto: "Por se tratar de um processo criativo, não garantimos preferência subjetiva. O resultado final depende diretamente das informações fornecidas e pode apresentar variações de estilo e interpretação." },
+  { titulo: "4. Uso de tecnologia", texto: "Utilizamos inteligência artificial como parte do processo criativo, aliada à curadoria humana. Ainda assim, podem ocorrer pequenas variações como pronúncia, interpretação ou nuances musicais." },
+  { titulo: "5. Revisões", texto: "Revisões podem estar incluídas conforme o plano contratado. Alterações estruturais podem exigir nova produção e não garantimos revisões ilimitadas." },
+  { titulo: "6. Prazos", texto: "Os prazos variam conforme o plano, podendo ser impactados por demanda, ajustes ou informações incompletas." },
+  { titulo: "7. Pagamento", texto: "O pagamento é realizado antecipadamente. Após confirmação, o pedido entra em produção." },
+  { titulo: "8. Cancelamento e reembolso", texto: "Por se tratar de produto personalizado, não oferecemos reembolso após início da produção, exceto em casos de erro técnico comprovado." },
+  { titulo: "9. Direitos de uso", texto: "O cliente pode compartilhar e utilizar a música para fins pessoais. Não garantimos elegibilidade para monetização em plataformas digitais." },
+  { titulo: "10. Responsabilidade", texto: "O cliente é responsável pelas informações fornecidas e por garantir que não violam direitos de terceiros." },
+  { titulo: "11. Limitação de responsabilidade", texto: "Não nos responsabilizamos por expectativas subjetivas, uso indevido do material ou restrições em plataformas externas." },
+  { titulo: "12. Contato", texto: "Para suporte: contato@musicasurpresa.com.br" },
+];
+
 export default function UpsellPage({
   customer = {
     recipient: "Pessoa especial",
@@ -69,20 +84,16 @@ export default function UpsellPage({
 
   const initialSelectedPlanId = useMemo(() => {
     if (!storedOrder.plan) return initialPlanId;
-
     const matchedPlan = plans.find((plan) => storedOrder.plan.includes(plan.name));
     return matchedPlan?.id || initialPlanId;
   }, [storedOrder.plan, initialPlanId, plans]);
 
-  const [selectedPlanId, setSelectedPlanId] = useState(initialSelectedPlanId);
+  const [selectedPlanId] = useState(initialSelectedPlanId);
+  const [termosAbertos, setTermosAbertos] = useState(false);
 
   const selectedPlan = useMemo(() => {
     return plans.find((plan) => plan.id === selectedPlanId) || plans[0];
   }, [plans, selectedPlanId]);
-
-  React.useEffect(() => {
-    setSelectedPlanId(initialSelectedPlanId);
-  }, [initialSelectedPlanId]);
 
   React.useEffect(() => {
     const stored = readStoredOrder();
@@ -167,32 +178,9 @@ export default function UpsellPage({
     }
 
     alert(
-      `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(
-        selectedPlan.price
-      )}`
+      `Continuar para pagamento: ${selectedPlan.name} - ${formatCurrency(selectedPlan.price)}`
     );
   };
-
-  const faqs = [
-    {
-      question: "Vou pagar de novo depois?",
-      answer: "Não. O pagamento final já incluirá a opção escolhida nesta etapa.",
-    },
-    {
-      question: "Posso optar só pela música?",
-      answer: `Sim. A opção Música Surpresa continua disponível por ${formatCurrency(defaultPlans[0].price)}.`,
-    },
-    {
-      question: "Quando recebo?",
-      answer:
-        "O prazo exato será confirmado antes do pagamento final, de acordo com a opção escolhida.",
-    },
-    {
-      question: "Posso mudar de ideia agora?",
-      answer:
-        "Sim. Esta etapa existe justamente para você escolher a melhor forma de entregar a surpresa antes de pagar.",
-    },
-  ];
 
   return (
     <>
@@ -205,7 +193,6 @@ export default function UpsellPage({
               className="h-10 w-auto lg:h-12"
             />
           </a>
-
           <div className="hidden rounded-full bg-white/70 px-6 py-2 text-sm font-bold text-[#0B2454] shadow-sm sm:block">
             Pedido quase finalizado 🎵
           </div>
@@ -214,6 +201,7 @@ export default function UpsellPage({
 
       <main className="min-h-screen bg-[#FFF8F3] px-4 py-4 text-[#0B2454] lg:px-8">
         <div className="mx-auto max-w-6xl">
+
           <section className="mt-4 rounded-[28px] border border-[#E8DDD2] bg-[#FFF8F3] px-5 py-5 shadow-sm md:px-6 lg:px-7 lg:py-6">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#B45D5D]">
               Resumo do seu pedido
@@ -239,113 +227,38 @@ export default function UpsellPage({
               </div>
             </div>
             <p className="mt-5 text-sm leading-6 text-[#5B6474] lg:text-base">
-              Suas informações foram recebidas. A escolha abaixo define apenas o formato da
-              entrega final antes de seguirmos para o pagamento.
+              Suas informações foram recebidas 👍 Temos tudo o que precisamos para preparar a sua música! 💝
+              <br />
+              Seguindo para o pagamento, você declara estar de acordo com os nossos{" "}
+              <button
+                type="button"
+                onClick={() => setTermosAbertos((v) => !v)}
+                className="text-[#B45D5D] underline underline-offset-2 hover:opacity-80 transition"
+              >
+                termos de serviço
+              </button>
+              .
             </p>
-          </section>
-
-          <section className="mt-6 text-center">
-            <h2 className="mt-3 text-2xl font-black tracking-[-0.04em] lg:text-3xl">
-              ✨ Três formas de entregar a sua música ✨
-            </h2>
-            <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-[#5B6474] lg:text-base">
-              A <span className="font-bold">música</span> é o coração da experiência! Ouvir a música e ler a <span className="font-bold">letra em video</span>, ou vivenciar tudo em uma <span className="font-bold">retrospectiva</span> em video com música, letra e fotos personalizadas torna deixa este presente ainda mais emocionante.
-            </p>
-          </section>
-
-          <section className="mt-10 grid gap-4 lg:grid-cols-3 lg:items-stretch">
-            {plans.map((plan) => {
-              const isSelected = selectedPlanId === plan.id;
-
-              return (
-                <button
-                  key={plan.id}
-                  type="button"
-                  onClick={() => setSelectedPlanId(plan.id)}
-                  className={`relative flex h-full min-h-[500px] flex-col rounded-[28px] border bg-white p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,0,0,0.12)] ${
-                    isSelected
-                      ? "border-[#0B2454] ring-2 ring-[#0B2454]"
-                      : "border-[#E8DDD2]"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] ${
-                          plan.featured
-                            ? "bg-[#0B2454] text-white shadow-sm"
-                            : "bg-[#FFF3EC] text-[#B45D5D]"
-                        }`}
-                      >
-                        {plan.badge}
-                      </span>
-                      <h2 className="mt-3 text-xl font-black tracking-[-0.02em]">{plan.name}</h2>
-                    </div>
-                    <span
-                      className={`mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full border text-sm ${
-                        isSelected
-                          ? "border-[#0B2454] bg-[#0B2454] text-white"
-                          : "border-[#CFC6BE] bg-white text-transparent"
-                      }`}
-                    >
-                      ✓
-                    </span>
-                  </div>
-
-                  {/* Preço com sobretachado */}
-                  <div className="mt-3">
-                    {plan.hasDiscount && plan.priceFrom && (
-                      <p className="text-sm font-semibold text-[#9CA3AF] line-through">
-                        {formatCurrency(plan.priceFrom)}
-                      </p>
-                    )}
-                    <p className="text-3xl font-black tracking-[-0.03em]">
-                      {formatCurrency(plan.price)}
-                    </p>
-                  </div>
-
-                  <p className="mt-3 text-sm leading-6 text-[#5B6474]">{plan.description}</p>
-                  <p className="mt-2 rounded-2xl bg-[#FFF8F3] px-4 py-2.5 text-sm font-semibold leading-6 text-[#0B2454]">
-                    {plan.helper}
-                  </p>
-
-                  <ul className="mt-4 flex-1 space-y-2 text-sm text-[#21314D]">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <span className="mt-[2px] text-[#B45D5D]">✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div
-                    className={`mt-4 rounded-[16px] px-4 py-3 text-center text-sm font-black ${
-                      isSelected
-                        ? "bg-[#0B2454] text-white"
-                        : "bg-[#F2EEE9] text-[#0B2454]"
-                    }`}
-                  >
-                    {isSelected ? "Selecionado" : "Selecionar este pacote"}
-                  </div>
-                </button>
-              );
-            })}
           </section>
 
           <section className="mt-6 rounded-[28px] border border-[#E8DDD2] bg-white p-6 shadow-sm lg:p-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#B45D5D]">
-                  Sua escolha final
-                </p>
-                <h3 className="mt-2 text-xl font-black tracking-[-0.02em] lg:text-2xl">
+                <h3 className="text-xl font-black tracking-[-0.02em] lg:text-2xl">
                   {selectedPlan.name}
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-[#5B6474]">
                   Esta será a opção considerada para o pagamento final.
                 </p>
+                <ul className="mt-4 space-y-2 text-sm text-[#21314D]">
+                  {selectedPlan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <span className="mt-[2px] text-[#B45D5D]">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              {/* Resumo de preço com sobretachado */}
               <div className="lg:text-right">
                 <p className="text-sm font-semibold text-[#6B7280]">Total</p>
                 {selectedPlan.hasDiscount && selectedPlan.priceFrom && (
@@ -368,19 +281,31 @@ export default function UpsellPage({
             </button>
           </section>
 
-          <section className="mt-8 rounded-[28px] border border-[#E8DDD2] bg-white p-6 shadow-sm lg:p-8">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#B45D5D]">
-              Dúvidas rápidas
-            </p>
-            <div className="mt-5 grid gap-4 lg:grid-cols-4">
-              {faqs.map((item) => (
-                <div key={item.question} className="rounded-[20px] bg-[#FFF8F3] p-5">
-                  <h4 className="text-base font-black tracking-[-0.02em]">{item.question}</h4>
-                  <p className="mt-2 text-sm leading-6 text-[#5B6474]">{item.answer}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          {termosAbertos && (
+            <section className="mt-4 rounded-[20px] border border-[#E8DDD2] bg-white px-5 py-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B45D5D]">
+                  Termos de Serviço — Última atualização: 29 de abril de 2026
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setTermosAbertos(false)}
+                  className="text-xs text-[#6B7280] hover:text-[#0B2454] transition font-semibold"
+                >
+                  Fechar ✕
+                </button>
+              </div>
+              <div className="space-y-3">
+                {termosConteudo.map((item) => (
+                  <div key={item.titulo}>
+                    <p className="text-[11px] font-bold text-[#0B2454]">{item.titulo}</p>
+                    <p className="text-[11px] leading-5 text-[#5B6474]">{item.texto}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
         </div>
       </main>
     </>

@@ -18,7 +18,7 @@ export default function AboutPage() {
     if (desc) desc.setAttribute("content", "Somos músicos profissionais com mais de 20 anos de experiência, criando músicas personalizadas exclusivas para momentos inesquecíveis.");
     return () => {
       document.title = "Música Surpresa";
-      if (desc) desc.setAttribute("content", "Crie uma música personalizada exclusiva como presente inesquecível para mães, pais, namorados e momentos especiais. Entrega em até 48h.");
+      if (desc) desc.setAttribute("content", "Crie uma música personalizada exclusiva como presente inesquecível para mães, pais, namorados e momentos especiais. Entrega em até 24h.");
     };
   }, []);
 

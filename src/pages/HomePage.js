@@ -124,7 +124,7 @@ export default function HomePage() {
     {
       title: (<>Uma música <span style={{ color: BRAND.terracotta }}>nova</span>, criada do zero, feita para<span style={{ color: BRAND.terracotta }}> pessoas que você ama</span></>),
       description: "Você nos conta sobre a pessoa e o que quer expressar. A gente transforma isso em uma música inédita, com letra e melodia criadas especialmente para ela ✨",
-      pills: ["Qualidade\nMusical", "Entrega em\naté 48h", "Experiências\nemocionantes"],
+      pills: ["Qualidade\nMusical", "Entrega em\naté 24h", "Experiências\nemocionantes"],
       image: imagemHero16,
       imageAlt: "Casal ouvindo música juntos",
       cta: "💝 CRIAR MÚSICA",
@@ -213,14 +213,14 @@ export default function HomePage() {
 
   const plans = [{
     name: DEFAULT_PLAN.name,
-    subtitle: "Música exclusiva com letra, melodia e arranjo personalizados, criada a partir da sua história e entregue em até 48 horas.",
+    subtitle: "Música exclusiva com letra, melodia e arranjo personalizados, criada a partir da sua história e entregue em até 24 horas.",
     priceFrom: DEFAULT_PLAN.hasDiscount ? formatPlanPrice(DEFAULT_PLAN.priceFrom) : null,
     price: formatPlanPrice(DEFAULT_PLAN.price),
     color: BRAND.terracotta,
     bg: BRAND.cream,
     border: BRAND.terracottaSoft,
     icon: "🎁",
-    features: ["Letra personalizada", "Melodia exclusiva", "Arranjo profissional", "Entrega em até 48h", "Áudio com qualidade"],
+    features: ["Letra personalizada", "Melodia exclusiva", "Arranjo profissional", "Entrega em até 24h", "Áudio com qualidade"],
     cta: "💝 CRIAR MÚSICA",
     featured: false,
   }];
@@ -239,7 +239,7 @@ export default function HomePage() {
   ];
 
   const faqs = [
-    { q: "Qual o prazo de entrega?", a: "As músicas são entregues em até 48 horas. Entre em contato com a gente se tiver urgência." },
+    { q: "Qual o prazo de entrega?", a: "As músicas são entregues em até 24 horas. Entre em contato com a gente se tiver urgência." },
     { q: "Como funciona o pagamento?", a: "O pagamento é totalmente online, e a produção da música é iniciada logo após aprovação / confirmação do pagamento." },
     { q: "Posso pedir alterações na música?", a: "Sim, a depender do tipo de alteração e do estágio de produção da música, você pode solicitar ajustes para alinhar o resultado ao contexto registrado no formulário de composição." },
     { q: "Vocês atendem empresas?", a: "Sim. Também criamos músicas personalizadas para eventos, ações corporativas, homenagens e campanhas especiais." },
@@ -295,7 +295,7 @@ export default function HomePage() {
               <div className="order-1 grid gap-4 lg:order-none lg:flex lg:items-center lg:gap-6">
                 {[
                   { icon: "⭐", title: "100% Personalizada", sub: "com nomes e frases" },
-                  { icon: "⚡", title: "Entrega Rápida", sub: "em menos de 48h" },
+                  { icon: "⚡", title: "Entrega Rápida", sub: "em menos de 24h" },
                   { icon: "💝", title: "Presente Inesquecível", sub: "que emociona de verdade" },
                 ].map((item) => (
                   <div key={item.title} className="flex items-center gap-4">
@@ -376,7 +376,7 @@ export default function HomePage() {
             {[
               "✓ Letra sobre a pessoa real",
               "✓ Melodia criada do zero",
-              "✓ Entrega em até 48h",
+              "✓ Entrega em até 24h",
               "✓ Com os detalhes dela — de verdade",
             ].map((selo) => (
               <span key={selo} className="rounded-full border border-[#E8DDD2] bg-white px-5 py-2 text-sm font-semibold" style={{ color: BRAND.terracottaDark }}>
