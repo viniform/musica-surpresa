@@ -28,7 +28,7 @@ export default function MusicaDeAmorPage() {
 
     document.title = "Música de Amor Personalizada — Letra com o Nome Dela | Música Surpresa";
     if (metaDesc) metaDesc.setAttribute("content", "Crie uma música de amor exclusiva com o nome dela, as memórias de vocês e melodia inédita. Presente romântico inesquecível. Entrega em até 24h.");
-    if (canonical) canonical.setAttribute("href", "https://musicasurpresa.com.br/musicadeamor");
+    if (canonical) canonical.setAttribute("href", "https://www.musicasurpresa.com.br/musicadeamor");
 
     return () => {
       document.title = prevTitle;

@@ -26,7 +26,7 @@ export default function HomePage() {
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) metaDesc.setAttribute("content", "Crie uma música personalizada exclusiva como presente inesquecível para mães, pais, namorados e momentos especiais. Letra e melodia criadas do zero. Entrega em até 24h.");
     const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.setAttribute("href", "https://musicasurpresa.com.br");
+    if (canonical) canonical.setAttribute("href", "https://www.musicasurpresa.com.br");
   }, []);
 
   const [formData, setFormData] = useState({
