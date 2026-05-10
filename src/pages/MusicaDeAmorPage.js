@@ -3,7 +3,7 @@ import imagemFormAmor from "../assets/Imagem_Index_Musica_Surpresa_01.webp";
 import imagemCasal from "../assets/Imagem_Index_03.webp";
 import whatsappIcon from "../assets/whatsapp_icon.png";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { BRAND, WHATSAPP_NUMBER } from "../constants/brand";
@@ -18,6 +18,24 @@ export default function MusicaDeAmorPage() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const prevDesc = metaDesc ? metaDesc.getAttribute("content") : "";
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const prevCanonical = canonical ? canonical.getAttribute("href") : "";
+
+    document.title = "Música de Amor Personalizada — Letra com o Nome Dela | Música Surpresa";
+    if (metaDesc) metaDesc.setAttribute("content", "Crie uma música de amor exclusiva com o nome dela, as memórias de vocês e melodia inédita. Presente romântico inesquecível. Entrega em até 24h.");
+    if (canonical) canonical.setAttribute("href", "https://musicasurpresa.com.br/musicadeamor");
+
+    return () => {
+      document.title = prevTitle;
+      if (metaDesc) metaDesc.setAttribute("content", prevDesc);
+      if (canonical) canonical.setAttribute("href", prevCanonical);
+    };
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",

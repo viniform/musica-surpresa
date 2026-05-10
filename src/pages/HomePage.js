@@ -21,6 +21,14 @@ export default function HomePage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
+  useEffect(() => {
+    document.title = "Música Surpresa — Músicas Personalizadas em até 24h";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute("content", "Crie uma música personalizada exclusiva como presente inesquecível para mães, pais, namorados e momentos especiais. Letra e melodia criadas do zero. Entrega em até 24h.");
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute("href", "https://musicasurpresa.com.br");
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     whatsapp: "",
@@ -122,7 +130,7 @@ export default function HomePage() {
 
   const heroSlides = useMemo(() => [
     {
-      title: (<>Uma música <span style={{ color: BRAND.terracotta }}>nova</span>, criada do zero, feita para<span style={{ color: BRAND.terracotta }}> pessoas que você ama</span></>),
+      title: (<>Música personalizada <span style={{ color: BRAND.terracotta }}>criada do zero</span>, feita para<span style={{ color: BRAND.terracotta }}> pessoas que você ama</span></>),
       description: "Você nos conta sobre a pessoa e o que quer expressar. A gente transforma isso em uma música inédita, com letra e melodia criadas especialmente para ela ✨",
       pills: ["Qualidade\nMusical", "Entrega em\naté 24h", "Experiências\nemocionantes"],
       image: imagemHero16,
@@ -239,9 +247,11 @@ export default function HomePage() {
   ];
 
   const faqs = [
+    { q: "O que é uma música personalizada?", a: "É uma canção inédita criada especialmente para uma pessoa específica — com letra que cita o nome dela, suas memórias e história. Na Música Surpresa, a composição e a gravação são feitas do zero a partir das informações que você nos fornece." },
     { q: "Qual o prazo de entrega?", a: "As músicas são entregues em até 24 horas. Entre em contato com a gente se tiver urgência." },
     { q: "Como funciona o pagamento?", a: "O pagamento é totalmente online, e a produção da música é iniciada logo após aprovação / confirmação do pagamento." },
     { q: "Vocês atendem empresas?", a: "Sim. Também criamos músicas personalizadas para eventos, ações corporativas, homenagens e campanhas especiais." },
+    { q: "A letra vai ter o nome da pessoa?", a: "Sim! A letra é criada com o nome dela, memórias que vocês compartilham, frases carinhosas e tudo que você nos contar. É uma música que só existe para ela." },
   ];
 
   const scrollTo = (id) => {

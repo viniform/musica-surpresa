@@ -1,0 +1,15 @@
+# Cloudflare Pages — Redirects
+# Formato: [origem] [destino] [código HTTP]
+
+# Redireciona rotas de nicho para URLs amigáveis (SEO)
+/musica-de-amor             /musicadeamor              301
+/musica-de-amor/            /musicadeamor              301
+/musica-para-maes           /musicaparamaes            301
+/musica-para-maes/          /musicaparamaes            301
+
+# Normaliza www → sem www (evita conteúdo duplicado)
+# (configure também no painel Cloudflare > Rules > Redirect Rules)
+
+# SPA fallback — todas as rotas não encontradas vão para o index.html
+# Isso permite que o React Router / lógica do App.js cuide do roteamento
+/*                          /index.html                200

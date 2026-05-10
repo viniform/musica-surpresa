@@ -1,9 +1,9 @@
 import imagemHeroMaes from "../assets/Imagem_Index_Dia_das_Maes_01.webp";
-import imagemFormMaes from "../assets/Imagem_Index_Dia_das_Maes_02.webp";
-import imagemMae from "../assets/Imagem_Index_Dia_das_Maes_01.webp";
+import imagemFormMaes from "../assets/Imagem_Index_08.webp";
+import imagemMae from "../assets/Imagem_Index_07.webp";
 import whatsappIcon from "../assets/whatsapp_icon.png";
 import logoMusicaSurpresa from "../assets/Logo_Musica_Surpresa.webp";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { BRAND, WHATSAPP_NUMBER } from "../constants/brand";
@@ -18,6 +18,24 @@ export default function MusicaParaMaesPage() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    const prevTitle = document.title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const prevDesc = metaDesc ? metaDesc.getAttribute("content") : "";
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const prevCanonical = canonical ? canonical.getAttribute("href") : "";
+
+    document.title = "Música Personalizada para a Mãe — Homenagem com o Nome Dela | Música Surpresa";
+    if (metaDesc) metaDesc.setAttribute("content", "Crie uma música em homenagem à sua mãe com o nome dela na letra. Presente para o Dia das Mães, aniversário ou qualquer ocasião. Entrega em até 24h.");
+    if (canonical) canonical.setAttribute("href", "https://musicasurpresa.com.br/musicaparamaes");
+
+    return () => {
+      document.title = prevTitle;
+      if (metaDesc) metaDesc.setAttribute("content", prevDesc);
+      if (canonical) canonical.setAttribute("href", prevCanonical);
+    };
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",

@@ -1,0 +1,33 @@
+# Cloudflare Pages — Headers de segurança e performance
+
+# Aplica a todas as páginas
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-XSS-Protection: 1; mode=block
+
+# HTML — sem cache (sempre fresco para o Google e usuários)
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Assets estáticos gerados pelo React (hash no nome) — cache longo
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Imagens e áudios — cache de 7 dias
+*.webp
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+*.png
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+*.jpg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+*.mp3
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# Sitemap e robots — cache curto para atualizações chegarem rápido ao Google
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/robots.txt
+  Cache-Control: public, max-age=3600
