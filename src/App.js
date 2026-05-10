@@ -6,6 +6,7 @@ import Termos from "./pages/Termos";
 import PaymentStatusPage from "./pages/PaymentStatusPage";
 import HomePage from "./pages/HomePage";
 import MusicaDeAmorPage from "./pages/MusicaDeAmorPage";
+import MusicaParaMaesPage from "./pages/MusicaParaMaesPage";
 import useScrollToHash from "./hooks/useScrollToHash";
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
   const isTermsRoute = pathname === "/termos";
   const isMusicFormRoute = pathname === "/criar-musica";
   const isMusicaDeAmorRoute = pathname === "/musicadeamor";
+  const isMusicaParaMaesRoute = pathname === "/musicaparamaes";
   const isPaymentSuccessRoute = pathname === "/pagamento/sucesso";
   const isPaymentPendingRoute = pathname === "/pagamento/pendente";
   const isPaymentErrorRoute = pathname === "/pagamento/erro";
@@ -171,6 +173,8 @@ export default function App() {
   if (isMusicFormRoute) return <MusicFormPage />;
 
   if (isMusicaDeAmorRoute) return <MusicaDeAmorPage />;
+
+  if (isMusicaParaMaesRoute) return <MusicaParaMaesPage />;
 
   if (isUpsellRoute) {
     const hasLead = !!sessionStorage.getItem("musicOrderLead");
