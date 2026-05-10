@@ -241,7 +241,6 @@ export default function HomePage() {
   const faqs = [
     { q: "Qual o prazo de entrega?", a: "As músicas são entregues em até 24 horas. Entre em contato com a gente se tiver urgência." },
     { q: "Como funciona o pagamento?", a: "O pagamento é totalmente online, e a produção da música é iniciada logo após aprovação / confirmação do pagamento." },
-    { q: "Posso pedir alterações na música?", a: "Sim, a depender do tipo de alteração e do estágio de produção da música, você pode solicitar ajustes para alinhar o resultado ao contexto registrado no formulário de composição." },
     { q: "Vocês atendem empresas?", a: "Sim. Também criamos músicas personalizadas para eventos, ações corporativas, homenagens e campanhas especiais." },
   ];
 
