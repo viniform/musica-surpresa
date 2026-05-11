@@ -21,8 +21,8 @@ export default function App() {
   const isAboutRoute = pathname === "/quem-somos";
   const isTermsRoute = pathname === "/termos";
   const isMusicFormRoute = pathname === "/criar-musica";
-  const isMusicaDeAmorRoute = pathname === "/musicadeamor";
-  const isMusicaParaMaesRoute = pathname === "/musicaparamaes";
+  const isMusicaDeAmorRoute = pathname === "/musica-de-amor";
+  const isMusicaParaMaesRoute = pathname === "/musica-para-maes";
   const isPaymentSuccessRoute = pathname === "/pagamento/sucesso";
   const isPaymentPendingRoute = pathname === "/pagamento/pendente";
   const isPaymentErrorRoute = pathname === "/pagamento/erro";
