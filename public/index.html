@@ -133,7 +133,40 @@
             "maxValue": 24,
             "unitCode": "HUR"
           },
-          "priceValidUntil": "2026-12-31"
+          "priceValidUntil": "2026-12-31",
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+              "@type": "MonetaryAmount",
+              "value": "0",
+              "currency": "BRL"
+            },
+            "shippingDestination": {
+              "@type": "DefinedRegion",
+              "addressCountry": "BR"
+            },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 0,
+                "maxValue": 1,
+                "unitCode": "DAY"
+              },
+              "transitTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 0,
+                "maxValue": 0,
+                "unitCode": "DAY"
+              }
+            }
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "BR",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+            "merchantReturnDays": 0
+          }
         },
         "aggregateRating": {
           "@type": "AggregateRating",
