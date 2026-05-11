@@ -28,7 +28,7 @@ export default function MusicaParaMaesPage() {
 
     document.title = "Música Personalizada para a Mãe — Homenagem com o Nome Dela | Música Surpresa";
     if (metaDesc) metaDesc.setAttribute("content", "Crie uma música em homenagem à sua mãe com o nome dela na letra. Presente para o Dia das Mães, aniversário ou qualquer ocasião. Entrega em até 24h.");
-    if (canonical) canonical.setAttribute("href", "https://www.musicasurpresa.com.br/musica-para-maes");
+    if (canonical) canonical.setAttribute("href", "https://www.musicasurpresa.com.br/musica-para-mae");
 
     return () => {
       document.title = prevTitle;

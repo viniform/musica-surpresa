@@ -3,7 +3,8 @@
 
 # Redireciona URLs antigas (sem traço) para URLs canônicas (com traço)
 /musicadeamor               /musica-de-amor            301
-/musicaparamaes             /musica-para-maes          301
+/musicaparamaes             /musica-para-mae           301
+/musica-para-maes           /musica-para-mae           301
 
 # Normaliza www → sem www (evita conteúdo duplicado)
 # (configure também no painel Cloudflare > Rules > Redirect Rules)
